@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import ModalDropdown from '../';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8',];
 
