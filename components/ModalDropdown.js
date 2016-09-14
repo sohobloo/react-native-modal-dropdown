@@ -48,7 +48,7 @@ export default class ModalDropdown extends Component {
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
     onSelect: PropTypes.func,
-    onClose: PropTypes.func,
+    //onClose: PropTypes.func,
   };
 
   constructor(props) {
@@ -116,6 +116,7 @@ export default class ModalDropdown extends Component {
   }
 
   _onButtonPress() {
+    alert('_onButtonPress');
     if (!this.props.onDropdownWillShow ||
       this.props.onDropdownWillShow() !== false) {
       this.setState({
@@ -127,6 +128,7 @@ export default class ModalDropdown extends Component {
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
       let frameStyle = this._calcPosition();
+      alert(frameStyle);
       return (
         <Modal animationType='fade'
                transparent={true}
@@ -171,6 +173,7 @@ export default class ModalDropdown extends Component {
   }
 
   _onModalPress() {
+    alert('_onModalPress');
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
       this.setState({
@@ -222,6 +225,7 @@ export default class ModalDropdown extends Component {
   }
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
+    alert('_onRowPress');
     if (!this.props.onSelect ||
       this.props.onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
