@@ -13,7 +13,6 @@ import {
   NativeModules,
   StyleSheet,
   Dimensions,
-  PixelRatio,
   View,
   Text,
   ListView,
@@ -128,7 +127,6 @@ export default class ModalDropdown extends Component {
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
       let frameStyle = this._calcPosition();
-      alert(frameStyle);
       return (
         <Modal animationType='fade'
                transparent={true}
@@ -253,25 +251,25 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    width: 300 * PixelRatio.get(),
-    height: 60 * PixelRatio.get(),
+    width: 300,
+    height: 60,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 4 * PixelRatio.get(),
+    borderRadius: 4,
     justifyContent: 'center',
   },
   buttonText: {
-    marginHorizontal: 8 * PixelRatio.get(),
-    fontSize: 36 * PixelRatio.get(),
+    marginHorizontal: 8,
+    fontSize: 12,
   },
   modal: {
     flex: 1,
   },
   dropdown: {
-    height: (40 * PixelRatio.get() + StyleSheet.hairlineWidth) * 5,
+    height: (40 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 4 * PixelRatio.get(),
+    borderRadius: 4,
     backgroundColor: 'white',
     justifyContent: 'center',
   },
@@ -283,12 +281,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flex: 1,
-    height: 40 * PixelRatio.get(),
+    height: 40,
     justifyContent: 'center',
   },
   rowText: {
-    marginHorizontal: 8 * PixelRatio.get(),
-    fontSize: 32 * PixelRatio.get(),
+    marginHorizontal: 8,
+    fontSize: 11,
     color: 'gray',
   },
   highlightedRowText: {
