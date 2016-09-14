@@ -51,7 +51,6 @@ export default class ModalDropdown extends Component {
   };
 
   constructor(props) {
-    alert(props); // DEBUG
     super(props);
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -115,7 +114,6 @@ export default class ModalDropdown extends Component {
   }
 
   _onButtonPress() {
-    alert('_onButtonPress');
     if (!this.props.onDropdownWillShow ||
       this.props.onDropdownWillShow() !== false) {
       this.setState({
@@ -149,9 +147,9 @@ export default class ModalDropdown extends Component {
     let windowHeight = dimensions.height;
     let dropdownWidth = this.props.dropdownStyle && this.props.dropdownStyle.width ||
       this.props.style && this.props.style.width ||
-      this.style.button.width;
+      styles.button.width;
     let dropdownHeight = this.props.dropdownStyle && this.props.dropdownStyle.height ||
-      this.styles.dropdown.height;
+      styles.dropdown.height;
 
     let buttonBottom = windowHeight - this._buttonFrame.y - this._buttonFrame.height;
     let showInBottom = buttonBottom > dropdownHeight || buttonBottom >= this._buttonFrame.y;
@@ -161,8 +159,8 @@ export default class ModalDropdown extends Component {
     return ({
       width: dropdownWidth,
       height: dropdownHeight,
-      top: showInBottom ? buttonBottom : max(0, this._buttonFrame.y - dropdownHeight),
-      left: showInLeft ? this._buttonFrame.x : max(0, buttonRight - dropdownWidth),
+      top: showInBottom ? buttonBottom : Math.max(0, this._buttonFrame.y - dropdownHeight),
+      left: showInLeft ? this._buttonFrame.x : Math.max(0, buttonRight - dropdownWidth),
     });
   }
 
@@ -171,7 +169,6 @@ export default class ModalDropdown extends Component {
   }
 
   _onModalPress() {
-    alert('_onModalPress');
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
       this.setState({
@@ -190,8 +187,8 @@ export default class ModalDropdown extends Component {
     return (
       <ListView style={styles.list}
                 dataSource={this._dataSource}
-                renderRow={this._renderRow}
-                renderSeparator={this._renderSeparator}
+                renderRow={this._renderRow.bind(this)}
+                renderSeparator={this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
       />
     );
@@ -216,14 +213,13 @@ export default class ModalDropdown extends Component {
       this.props.renderRow(rowData, rowID);
     return (
       <TouchableHighlight key={key}
-                          onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow).bind(this);}}>
+                          onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow);}}>
         {row}
       </TouchableHighlight>
     );
   }
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    alert('_onRowPress');
     if (!this.props.onSelect ||
       this.props.onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
@@ -251,15 +247,15 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    width: 300,
-    height: 60,
+    width: 120,
+    height: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 4,
+    borderRadius: 2,
     justifyContent: 'center',
   },
   buttonText: {
-    marginHorizontal: 8,
+    marginHorizontal: 4,
     fontSize: 12,
   },
   modal: {
@@ -269,7 +265,7 @@ const styles = StyleSheet.create({
     height: (40 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 4,
+    borderRadius: 2,
     backgroundColor: 'white',
     justifyContent: 'center',
   },
@@ -281,11 +277,11 @@ const styles = StyleSheet.create({
   },
   row: {
     flex: 1,
-    height: 40,
+    height: 20,
     justifyContent: 'center',
   },
   rowText: {
-    marginHorizontal: 8,
+    marginHorizontal: 4,
     fontSize: 11,
     color: 'gray',
   },
