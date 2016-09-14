@@ -1,5 +1,5 @@
 /**
- * Created by raoxin on 16/9/13.
+ * Created by sohobloo on 16/9/13.
  */
 
 'use strict';
@@ -10,36 +10,34 @@ import React, {
 } from 'react';
 
 import {
+  NativeModules,
   StyleSheet,
   Dimensions,
+  PixelRatio,
   View,
-  Image,
   Text,
   ListView,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  TouchableHighlight,
   Modal,
   ActivityIndicator,
-  NativeModules,
 } from 'react-native';
 
 export default class ModalDropdown extends Component {
   static defaultProps = {
-    loading: true,
     disabled: false,
-    showDropdown: false,
     defaultIndex: -1,
     defaultValue: 'Please select...',
   };
 
   static propTypes = {
-    loading: PropTypes.bool,
     disabled: PropTypes.bool,
     showDropdown: PropTypes.bool,
 
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
-    options: PropTypes.array,
+    options: PropTypes.arrayOf(PropTypes.string),
 
     style: PropTypes.object,
     textStyle: PropTypes.object,
@@ -54,24 +52,35 @@ export default class ModalDropdown extends Component {
   };
 
   constructor(props) {
+    alert(props); // DEBUG
     super(props);
+
+    this.updatePosition = this.updatePosition.bind(this);
 
     this._button = null;
     this._buttonFrame = null;
 
     this.state = {
-      showDropdown: this.props.showDropdown,
-      buttonText: this.props.defaultValue,
-      selectedIndex: this.props.defaultIndex,
+      disabled: props.disabled,
+      loading: !props.options,
+      showDropdown: false,
+      buttonText: props.defaultValue,
+      selectedIndex: props.defaultIndex,
     };
   }
 
   componentDidMount() {
-    setTimeout(() => this.updatePosition(), 0);
+    setTimeout(this.updatePosition, 0);
   }
 
   componentDidUpdate() {
-    setTimeout(() => this.updatePosition(), 0);
+    setTimeout(this.updatePosition, 0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.state = {
+      loading: !nextProps.options,
+    };
   }
 
   render() {
@@ -98,8 +107,7 @@ export default class ModalDropdown extends Component {
                         onPress={this._onButtonPress.bind(this)}>
         <View style={[styles.button, this.props.style]}>
           <Text style={[styles.buttonText, this.props.textStyle]}
-                numberOfLines={1}
-                allowFontScaling={false}>
+                numberOfLines={1}>
             {this.state.buttonText}
           </Text>
         </View>
@@ -108,45 +116,25 @@ export default class ModalDropdown extends Component {
   }
 
   _onButtonPress() {
-    if (this.props.onDropdownWillShow) {
-      if (this.props.onDropdownWillShow() !== false) {
-        this.setState({
-          showDropdown: true,
-        });
-      }
+    if (!this.props.onDropdownWillShow ||
+      this.props.onDropdownWillShow() !== false) {
+      this.setState({
+        showDropdown: true,
+      });
     }
   }
 
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
-      let dimensions = Dimensions.get('window');
-      let windowWidth = dimensions.width;
-      let windowHeight = dimensions.height;
-      let dropdownWidth = this.props.dropdownStyle && this.props.dropdownStyle.width ||
-        this.props.style && this.props.style.width ||
-        this.style.button.width;
-      let dropdownHeight = this.props.dropdownStyle && this.props.dropdownStyle.height ||
-        this.styles.dropdown.height;
-
-      let buttonBottom = windowHeight - this._buttonFrame.y - this._buttonFrame.height;
-      let showInBottom = buttonBottom > dropdownHeight || buttonBottom >= this._buttonFrame.y;
-      let buttonRight = windowWidth - this._buttonFrame.x - this._buttonFrame.width;
-      let showInLeft = buttonRight >= this._buttonFrame.x;
-
-      let frameStyle = {
-        width: dropdownWidth,
-        height: dropdownHeight,
-        top: showInBottom ? buttonBottom : max(0, this._buttonFrame.y - dropdownHeight),
-        left: showInLeft ? this._buttonFrame.x : max(0, buttonRight - dropdownWidth),
-      };
-
+      let frameStyle = this._calcPosition();
       return (
         <Modal animationType='fade'
-          transparent={true}>
-          <TouchableWithoutFeedback onPress={this._onModalPress}>
+               transparent={true}
+               onClose={this._onModalClose.bind(this)}>
+          <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
-                {this.props.loading ? this._renderLoading() : this._renderDropdown()}
+                {this.state.loading ? this._renderLoading() : this._renderDropdown()}
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -155,34 +143,155 @@ export default class ModalDropdown extends Component {
     }
   }
 
+  _calcPosition() {
+    let dimensions = Dimensions.get('window');
+    let windowWidth = dimensions.width;
+    let windowHeight = dimensions.height;
+    let dropdownWidth = this.props.dropdownStyle && this.props.dropdownStyle.width ||
+      this.props.style && this.props.style.width ||
+      this.style.button.width;
+    let dropdownHeight = this.props.dropdownStyle && this.props.dropdownStyle.height ||
+      this.styles.dropdown.height;
+
+    let buttonBottom = windowHeight - this._buttonFrame.y - this._buttonFrame.height;
+    let showInBottom = buttonBottom > dropdownHeight || buttonBottom >= this._buttonFrame.y;
+    let buttonRight = windowWidth - this._buttonFrame.x - this._buttonFrame.width;
+    let showInLeft = buttonRight >= this._buttonFrame.x;
+
+    return ({
+      width: dropdownWidth,
+      height: dropdownHeight,
+      top: showInBottom ? buttonBottom : max(0, this._buttonFrame.y - dropdownHeight),
+      left: showInLeft ? this._buttonFrame.x : max(0, buttonRight - dropdownWidth),
+    });
+  }
+
+  _onModalClose() {
+    alert('_onModalClose');
+  }
+
   _onModalPress() {
-    // TODO
+    if (!this.props.onDropdownWillHide ||
+      this.props.onDropdownWillHide() !== false) {
+      this.setState({
+        showDropdown: false,
+      });
+    }
   }
 
   _renderLoading() {
-    // TODO
+    return (
+      <ActivityIndicator size='small'/>
+    );
   }
 
   _renderDropdown() {
-    // TODO
+    return (
+      <ListView style={styles.list}
+                dataSource={this._dataSource}
+                renderRow={this._renderRow}
+                renderSeparator={this._renderSeparator}
+                automaticallyAdjustContentInsets={false}
+      />
+    );
+  }
+
+  get _dataSource() {
+    let ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    });
+    return ds.cloneWithRows(this.props.options);
+  }
+
+  _renderRow(rowData, sectionID, rowID, highlightRow) {
+    let key = `row_${rowID}`;
+    let highlighted = rowID == this.state.selectedIndex
+    let row = !this.props.renderRow ?
+      (<View style={styles.row}>
+        <Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
+          {rowData}
+        </Text>
+      </View>) :
+      this.props.renderRow(rowData, rowID);
+    return (
+      <TouchableHighlight key={key}
+                          onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow).bind(this);}}>
+        {row}
+      </TouchableHighlight>
+    );
+  }
+
+  _onRowPress(rowData, sectionID, rowID, highlightRow) {
+    if (!this.props.onSelect ||
+      this.props.onSelect(rowID, rowData) !== false) {
+      highlightRow(sectionID, rowID);
+      this.setState({
+        buttonText: rowData,
+        selectedIndex: rowID,
+      });
+    }
+    if (!this.props.onDropdownWillHide ||
+      this.props.onDropdownWillHide() !== false) {
+      this.setState({
+        showDropdown: false,
+      });
+    }
+  }
+
+  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    if (rowID === this.props.options.length - 1) return;
+    let key = `spr_${rowID}`;
+    return (<View style={styles.separator}
+            key={key}
+      />);
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    height: 60,
-    alignItems: 'center',
+    width: 300 * PixelRatio.get(),
+    height: 60 * PixelRatio.get(),
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'lightgray',
+    borderRadius: 4 * PixelRatio.get(),
+    justifyContent: 'center',
   },
   buttonText: {
-
+    marginHorizontal: 8 * PixelRatio.get(),
+    fontSize: 36 * PixelRatio.get(),
   },
   modal: {
     flex: 1,
   },
   dropdown: {
-    height: 300,
+    height: (40 * PixelRatio.get() + StyleSheet.hairlineWidth) * 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'lightgray',
+    borderRadius: 4 * PixelRatio.get(),
+    backgroundColor: 'white',
+    justifyContent: 'center',
   },
   loading: {
-
+    alignSelf: 'center',
   },
+  list: {
+    flex: 1,
+  },
+  row: {
+    flex: 1,
+    height: 40 * PixelRatio.get(),
+    justifyContent: 'center',
+  },
+  rowText: {
+    marginHorizontal: 8 * PixelRatio.get(),
+    fontSize: 32 * PixelRatio.get(),
+    color: 'gray',
+  },
+  highlightedRowText: {
+    color: 'black',
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'lightgray',
+  }
 });
