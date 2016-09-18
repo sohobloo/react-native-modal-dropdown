@@ -28,19 +28,18 @@ export default class ModalDropdown extends Component {
     disabled: false,
     defaultIndex: -1,
     defaultValue: 'Please select...',
+    options: null,
   };
 
   static propTypes = {
     disabled: PropTypes.bool,
-    showDropdown: PropTypes.bool,
-
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.string),
 
-    style: PropTypes.object,
-    textStyle: PropTypes.object,
-    dropdownStyle: PropTypes.object,
+    style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+    dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 
     renderRow: PropTypes.func,
 
@@ -57,10 +56,11 @@ export default class ModalDropdown extends Component {
 
     this._button = null;
     this._buttonFrame = null;
+    this._nextIndex = null;
 
     this.state = {
       disabled: props.disabled,
-      loading: !props.options,
+      loading: props.options == null,
       showDropdown: false,
       buttonText: props.defaultValue,
       selectedIndex: props.defaultIndex,
@@ -76,14 +76,28 @@ export default class ModalDropdown extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state = {
-      loading: !nextProps.options,
-    };
+    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue;
+    var selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
+    if (selectedIndex < 0) {
+      selectedIndex = nextProps.defaultIndex;
+      if (selectedIndex < 0) {
+        buttonText = nextProps.defaultValue;
+      }
+    }
+    this._nextValue = null;
+    this._nextIndex = null;
+
+    this.setState({
+      disabled: nextProps.disabled,
+      loading: nextProps.options == undefined,
+      buttonText: buttonText,
+      selectedIndex: selectedIndex,
+    });
   }
 
   render() {
     return (
-      <View style={this.props.style}>
+      <View {...this.props}>
         {this._renderButton()}
         {this._renderModal()}
       </View>
@@ -103,7 +117,7 @@ export default class ModalDropdown extends Component {
       <TouchableOpacity ref={button => this._button = button}
                         disabled={this.props.disabled}
                         onPress={this._onButtonPress.bind(this)}>
-        <View style={[styles.button, this.props.style]}>
+        <View style={styles.button}>
           <Text style={[styles.buttonText, this.props.textStyle]}
                 numberOfLines={1}>
             {this.state.buttonText}
@@ -125,6 +139,7 @@ export default class ModalDropdown extends Component {
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
       let frameStyle = this._calcPosition();
+      console.log(`frameStyle={width:${frameStyle.width}, height:${frameStyle.height}, top:${frameStyle.top}, left:${frameStyle.left}}`);
       return (
         <Modal animationType='fade'
                transparent={true}
@@ -145,23 +160,33 @@ export default class ModalDropdown extends Component {
     let dimensions = Dimensions.get('window');
     let windowWidth = dimensions.width;
     let windowHeight = dimensions.height;
-    let dropdownWidth = this.props.dropdownStyle && this.props.dropdownStyle.width ||
-      this.props.style && this.props.style.width ||
-      styles.button.width;
-    let dropdownHeight = this.props.dropdownStyle && this.props.dropdownStyle.height ||
-      styles.dropdown.height;
 
-    let buttonBottom = windowHeight - this._buttonFrame.y - this._buttonFrame.height;
-    let showInBottom = buttonBottom > dropdownHeight || buttonBottom >= this._buttonFrame.y;
-    let buttonRight = windowWidth - this._buttonFrame.x - this._buttonFrame.width;
-    let showInLeft = buttonRight >= this._buttonFrame.x;
+    let dropdownHeight = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle.height)) ||
+      StyleSheet.flatten(styles.dropdown).height;
 
-    return ({
-      width: dropdownWidth,
+    let bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
+    let rightSpace = windowWidth - this._buttonFrame.x;
+    let showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
+    let showInLeft = rightSpace >= this._buttonFrame.x;
+
+    var style = {
       height: dropdownHeight,
-      top: showInBottom ? buttonBottom : Math.max(0, this._buttonFrame.y - dropdownHeight),
-      left: showInLeft ? this._buttonFrame.x : Math.max(0, buttonRight - dropdownWidth),
-    });
+      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
+    }
+
+    if (showInLeft) {
+      style.left = this._buttonFrame.x;
+    } else {
+      let dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
+        (this.props.style && StyleSheet.flatten(this.props.style.width)) ||
+        -1;
+      if (dropdownWidth !== -1) {
+        style.width = dropdownWidth;
+      }
+      style.right = rightSpace - this._buttonFrame.w;
+    }
+
+    return style;
   }
 
   _onModalClose() {
@@ -205,12 +230,10 @@ export default class ModalDropdown extends Component {
     let key = `row_${rowID}`;
     let highlighted = rowID == this.state.selectedIndex
     let row = !this.props.renderRow ?
-      (<View style={styles.row}>
-        <Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
+      (<Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
           {rowData}
-        </Text>
-      </View>) :
-      this.props.renderRow(rowData, rowID);
+        </Text>) :
+      this.props.renderRow(rowData, rowID, highlighted);
     return (
       <TouchableHighlight key={key}
                           onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow);}}>
@@ -223,6 +246,8 @@ export default class ModalDropdown extends Component {
     if (!this.props.onSelect ||
       this.props.onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
+      this._nextValue = rowData;
+      this._nextIndex = rowID;
       this.setState({
         buttonText: rowData,
         selectedIndex: rowID,
@@ -240,29 +265,25 @@ export default class ModalDropdown extends Component {
     if (rowID === this.props.options.length - 1) return;
     let key = `spr_${rowID}`;
     return (<View style={styles.separator}
-            key={key}
-      />);
+                  key={key}
+    />);
   }
 }
 
 const styles = StyleSheet.create({
   button: {
-    width: 120,
-    height: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'lightgray',
-    borderRadius: 2,
+    flex: 1,
     justifyContent: 'center',
   },
   buttonText: {
-    marginHorizontal: 4,
     fontSize: 12,
   },
   modal: {
     flex: 1,
   },
   dropdown: {
-    height: (40 + StyleSheet.hairlineWidth) * 5,
+    position: 'absolute',
+    height: (32 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
     borderRadius: 2,
@@ -275,15 +296,13 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
   },
-  row: {
-    flex: 1,
-    height: 20,
-    justifyContent: 'center',
-  },
   rowText: {
-    marginHorizontal: 4,
+    flex: 1,
+    marginHorizontal: 6,
     fontSize: 11,
+    lineHeight: 32,
     color: 'gray',
+    textAlignVertical: 'center',
   },
   highlightedRowText: {
     color: 'black',

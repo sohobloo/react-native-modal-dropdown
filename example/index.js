@@ -9,47 +9,120 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
 } from 'react-native';
 
-//import ModalDropdown from 'react-native-modal-dropdown';
-import ModalDropdown from './ModalDropdown';
+import ModalDropdown from 'react-native-modal-dropdown';
+//import ModalDropdown from './ModalDropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8',];
 
 class Demo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dropdown_4_options: null,
+      dropdown_4_defaultValue: 'loading...',
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.cell}>
-            <ModalDropdown style={{top: 16, left: 8}}
+            <ModalDropdown style={styles.dropdown_1}
                            options={DEMO_OPTIONS_1}
             />
           </View>
           <View style={styles.cell}>
-            <ModalDropdown style={{alignSelf: 'flex-end', top: 16, right: 8}}
+            <ModalDropdown style={styles.dropdown_2}
+                           textStyle={styles.dropdown_2_text}
+                           dropdownStyle={styles.dropdown_2_dropdown}
                            options={DEMO_OPTIONS_1}
+                           renderRow={this._dropdown_2_renderRow.bind(this)}
             />
           </View>
         </View>
         <View style={styles.row}>
-
+          <Text>
+            {`I'll add an example within scroll view here later.`}
+          </Text>
         </View>
         <View style={styles.row}>
           <View style={[styles.cell, {justifyContent: 'flex-end'}]}>
-            <ModalDropdown style={{bottom: 8, left: 16}}
-                           options={DEMO_OPTIONS_1}
+            <ModalDropdown style={styles.dropdown_4}
+                           dropdownStyle={styles.dropdown_4_dropdown}
+                           options={this.state.dropdown_4_options}
+                           defaultIndex={-1}
+                           defaultValue={this.state.dropdown_4_defaultValue}
+                           onDropdownWillShow={this._dropdown_4_willShow.bind(this)}
+                           onDropdownWillHide={this._dropdown_4_willHide.bind(this)}
+                           onSelect={(idx, value) => this._dropdown_4_onSelect(idx, value)}
             />
           </View>
           <View style={[styles.cell, {justifyContent: 'flex-end'}]}>
-            <ModalDropdown style={{alignSelf: 'flex-end', bottom: 8, right: 16}}
-                           options={DEMO_OPTIONS_1}
+            <ModalDropdown style={styles.dropdown_5}
+                           options={[`I can't be selected`, `Select me to hide`]}
+                           onDropdownWillHide={this._dropdown_5_willHide.bind(this)}
+                           onSelect={this._dropdown_5_onSelect.bind(this)}
             />
           </View>
         </View>
       </View>
     );
+  }
+
+  _dropdown_2_renderRow(rowData, rowID, highlighted) {
+    //let imgSrc = require(`images/${highlighted ? 'heart' : 'flower'}.png`);
+    let evenRow = rowID % 2;
+    return (
+      <View style={[styles.dropdown_2_row, evenRow && {backgroundColor: 'lemonchiffon'}]}>
+        <Image style={styles.dropdown_2_image}
+               mode='stretch'
+        />
+        <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
+          {rowData}
+        </Text>
+      </View>
+    );
+  }
+
+  _dropdown_4_willShow() {
+    setTimeout(() => this.setState({
+      dropdown_4_options: DEMO_OPTIONS_1,
+      dropdown_4_defaultValue: 'loaded',
+    }), 2000);
+  }
+
+  _dropdown_4_willHide() {
+    this.setState({
+      dropdown_4_options: null,
+      dropdown_4_defaultValue: 'loading',
+    });
+  }
+
+  _dropdown_4_onSelect(idx, value) {
+    alert(`idx=${idx}, value='${value}'`);
+  }
+
+  _dropdown_5_willShow() {
+    return false;
+  }
+
+  _dropdown_5_willHide() {
+    let idx = this._dropdown_5_idx;
+    this._dropdown_5_idx = undefined;
+    return idx == 1;
+  }
+
+  _dropdown_5_onSelect(idx, value) {
+    this._dropdown_5_idx = idx;
+    if (this._dropdown_5_idx == 0) {
+      return false;
+    }
   }
 }
 
@@ -64,6 +137,64 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
+  },
+
+  dropdown_1: {
+    top: 32,
+    left: 8
+  },
+  dropdown_2: {
+    alignSelf: 'flex-end',
+    width: 150,
+    top: 32,
+    right: 8,
+    borderWidth: 0,
+    borderRadius: 3,
+    backgroundColor: 'cornflowerblue',
+  },
+  dropdown_2_text: {
+    lineHeight: 40,
+    marginHorizontal: 6,
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  dropdown_2_dropdown: {
+    width: 150,
+    borderColor: 'cornflowerblue',
+    borderWidth: 2,
+    borderRadius: 3,
+  },
+  dropdown_2_row: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    alignItems: 'center',
+  },
+  dropdown_2_image: {
+    marginLeft: 4,
+    width: 30,
+    height: 30,
+  },
+  dropdown_2_row_text: {
+    marginHorizontal: 4,
+    fontSize: 16,
+    color: 'navy',
+    textAlignVertical: 'center',
+  },
+  dropdown_4: {
+    margin: 8,
+  },
+  dropdown_4_dropdown: {
+    width: 100,
+  },
+  dropdown_5: {
+    alignSelf: 'flex-end',
+    margin: 8,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 1,
   },
 });
 
