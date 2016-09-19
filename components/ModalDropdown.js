@@ -175,7 +175,7 @@ export default class ModalDropdown extends Component {
       return (
         <Modal animationType='fade'
                transparent={true}
-               onClose={this._onModalClose.bind(this)}>
+               onRequestClose={this._onRequestClose.bind(this)}>
           <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
@@ -210,8 +210,7 @@ export default class ModalDropdown extends Component {
       style.left = this._buttonFrame.x;
     } else {
       let dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
-        (this.props.style && StyleSheet.flatten(this.props.style.width)) ||
-        -1;
+        (this.props.style && StyleSheet.flatten(this.props.style.width)) || -1;
       if (dropdownWidth !== -1) {
         style.width = dropdownWidth;
       }
@@ -221,8 +220,13 @@ export default class ModalDropdown extends Component {
     return style;
   }
 
-  _onModalClose() {
-    alert('_onModalClose');
+  _onRequestClose() {
+    if (!this.props.onDropdownWillHide ||
+      this.props.onDropdownWillHide() !== false) {
+      this.setState({
+        showDropdown: false,
+      });
+    }
   }
 
   _onModalPress() {
@@ -263,8 +267,8 @@ export default class ModalDropdown extends Component {
     let highlighted = rowID == this.state.selectedIndex
     let row = !this.props.renderRow ?
       (<Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
-          {rowData}
-        </Text>) :
+        {rowData}
+      </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
     return (
       <TouchableHighlight key={key}
@@ -332,6 +336,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 6,
     fontSize: 11,
+    height: 32,
     lineHeight: 32,
     color: 'gray',
     textAlignVertical: 'center',
