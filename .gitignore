@@ -6,3 +6,5 @@
 .idea
 
 example/ModalDropdown.js
+
+npm-debug.log

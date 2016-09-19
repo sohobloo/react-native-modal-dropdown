@@ -15,7 +15,7 @@ A react-native dropdown/picker/selector component for both Android & iOS.
 
 Coming soon.
 
-## Install (Coming soon.)
+## Install
 
 ```sh
 npm i react-native-modal-dropdown --save
