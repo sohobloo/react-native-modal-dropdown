@@ -53,9 +53,9 @@ You can also render your option row by implement the `renderRow` function.
 Prop               | Type     | Optional | Default   | Description
 ------------------ | -------- | -------- | --------- | -----------
 disabled           | bool     | Yes      | false     | disable/enable the component.
-defaultIndex       | number   | Yes      | -1        | Init selected index. `-1`: None is selected. _This only change the highlight of the dropdown row, you have to give a `defaultValue` to change the init text._
+defaultIndex       | number   | Yes      | -1        | Init selected index. `-1`: None is selected. **This only change the highlight of the dropdown row, you have to give a `defaultValue` to change the init text.**
 defaultValue       | string   | Yes      | Please select... | Init text of the button.
-options            | arrayOf(string) | Yes      |           | Options. The dropdown will show a loading indicator if `options` is `null/undefined`. 
+options            | arrayOf(string) | Yes      |           | Options. **The dropdown will show a loading indicator if `options` is `null/undefined`.**
 style              | object   | Yes      |           | Style of the button.
 testStyle          | object   | Yes      |           | Style of the button text.
 dropdownStyle      | object   | Yes      |           | Style of the dropdown list.
@@ -68,10 +68,10 @@ onSelect           | func     | Yes      |           | Trigger when option row t
 
 Method           |  Description
 ---------------- |  -----------
-updatePosition() |  Manually update the position of the dropdown. _If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`._
-show()           |  Show the dropdown. _Won't trigger `onDropdownWillShow`._
-hide()           |  Hide the dropdown. _Won't trigger `onDropdownWillHide`._
-select(idx)      |  Select the specified option of the `idx`. _Won't trigger `onSelect`._
+updatePosition() |  Manually update the position of the dropdown. <font color=red>**If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`.**</font>
+show()           |  Show the dropdown. **Won't trigger `onDropdownWillShow`.**
+hide()           |  Hide the dropdown. **Won't trigger `onDropdownWillHide`.**
+select(idx)      |  Select the specified option of the `idx`. **Won't trigger `onSelect`.**
 
 
 ## Next version
