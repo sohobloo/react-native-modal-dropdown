@@ -1,6 +1,6 @@
 # react-native-modal-dropdown
 
-[![npm version](https://img.shields.io/npm/v/npm.svg)](https://npmjs.org/package/react-native-modal-dropdown "View this project on npm")
+[![npm](https://img.shields.io/npm/v/npm.svg?maxAge=2592000)](https://www.npmjs.com/package/react-native-modal-dropdown)
 
 A react-native dropdown/picker/selector component for both Android & iOS.
 
