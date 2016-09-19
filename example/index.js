@@ -49,8 +49,10 @@ class Demo extends Component {
           </View>
         </View>
         <View style={styles.row}>
-          <ScrollView style={styles.scrollView}
+          <ScrollView ref={el => this._scrollView = el}
+                      style={styles.scrollView}
                       contentContainerStyle={styles.contentContainer}
+                      showsVerticalScrollIndicator={true}
                       onScroll={this._dropdown_3_updatePosition.bind(this)}
                       scrollEventThrottle={1}>
             <Text>
@@ -185,9 +187,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingVertical: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 500,
+    paddingVertical: 100,
+    paddingLeft: 20,
   },
   textButton: {
     color: 'deepskyblue',
@@ -210,6 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'cornflowerblue',
   },
   dropdown_2_text: {
+    height: 40,
     lineHeight: 40,
     marginHorizontal: 6,
     fontSize: 18,
