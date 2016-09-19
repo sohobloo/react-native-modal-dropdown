@@ -1,5 +1,7 @@
 # react-native-modal-dropdown
 
+[![npm version](https://img.shields.io/npm/v/npm.svg)](https://npmjs.org/package/react-native-modal-dropdown "View this project on npm")
+
 A react-native dropdown/picker/selector component for both Android & iOS.
 
 ## Fuatures
