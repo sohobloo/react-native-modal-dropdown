@@ -11,12 +11,14 @@ import {
   Text,
   View,
   Image,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 
 import ModalDropdown from 'react-native-modal-dropdown';
 //import ModalDropdown from './ModalDropdown';
 
-const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8',];
+const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
 
 class Demo extends Component {
   constructor(props) {
@@ -47,9 +49,18 @@ class Demo extends Component {
           </View>
         </View>
         <View style={styles.row}>
-          <Text>
-            {`I'll add an example within scroll view here later.`}
-          </Text>
+          <ScrollView style={styles.scrollView}
+                      contentContainerStyle={styles.contentContainer}
+                      onScroll={this._dropdown_3_updatePosition.bind(this)}
+                      scrollEventThrottle={1}>
+            <Text>
+              {'You have to update dropdown position after scroll.'}
+            </Text>
+            <ModalDropdown ref={el => this._dropdown_3 = el}
+                           style={styles.dropdown_3}
+                           options={DEMO_OPTIONS_1}
+            />
+          </ScrollView>
         </View>
         <View style={styles.row}>
           <View style={[styles.cell, {justifyContent: 'flex-end'}]}>
@@ -64,8 +75,26 @@ class Demo extends Component {
             />
           </View>
           <View style={[styles.cell, {justifyContent: 'flex-end'}]}>
-            <ModalDropdown style={styles.dropdown_5}
-                           options={[`I can't be selected`, `Select me to hide`]}
+            <TouchableOpacity onPress={this._dropdown_5_show.bind(this)}>
+              <Text style={styles.textButton}>
+                {'Show dropdown'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this._dropdown_5_select(2)}>
+              <Text style={styles.textButton}>
+                {'Select the 3rd option'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this._dropdown_5_select(-1)}>
+              <Text style={styles.textButton}>
+                {'Clear selection'}
+              </Text>
+            </TouchableOpacity>
+            <ModalDropdown ref={el => this._dropdown_5 = el}
+                           style={styles.dropdown_5}
+                           options={['Select me to hide', `I can't be selected`, 'I can only be selected outside']}
+                           defaultValue='Try the Show button above'
+                           onDropdownWillShow={this._dropdown_5_willShow.bind(this)}
                            onDropdownWillHide={this._dropdown_5_willHide.bind(this)}
                            onSelect={this._dropdown_5_onSelect.bind(this)}
             />
@@ -76,18 +105,23 @@ class Demo extends Component {
   }
 
   _dropdown_2_renderRow(rowData, rowID, highlighted) {
-    //let imgSrc = require(`images/${highlighted ? 'heart' : 'flower'}.png`);
+    let icon = highlighted ? require('./images/heart.png') : require('./images/flower.png');
     let evenRow = rowID % 2;
     return (
       <View style={[styles.dropdown_2_row, evenRow && {backgroundColor: 'lemonchiffon'}]}>
         <Image style={styles.dropdown_2_image}
                mode='stretch'
+               source={icon}
         />
         <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
           {rowData}
         </Text>
       </View>
     );
+  }
+
+  _dropdown_3_updatePosition() {
+    this._dropdown_3 && this._dropdown_3.updatePosition();
   }
 
   _dropdown_4_willShow() {
@@ -108,6 +142,14 @@ class Demo extends Component {
     alert(`idx=${idx}, value='${value}'`);
   }
 
+  _dropdown_5_show() {
+    this._dropdown_5 && this._dropdown_5.show();
+  }
+
+  _dropdown_5_select(idx) {
+    this._dropdown_5 && this._dropdown_5.select(idx);
+  }
+
   _dropdown_5_willShow() {
     return false;
   }
@@ -115,12 +157,12 @@ class Demo extends Component {
   _dropdown_5_willHide() {
     let idx = this._dropdown_5_idx;
     this._dropdown_5_idx = undefined;
-    return idx == 1;
+    return idx == 0;
   }
 
   _dropdown_5_onSelect(idx, value) {
     this._dropdown_5_idx = idx;
-    if (this._dropdown_5_idx == 0) {
+    if (this._dropdown_5_idx != 0) {
       return false;
     }
   }
@@ -137,6 +179,21 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
+  },
+
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    paddingVertical: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textButton: {
+    color: 'deepskyblue',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'deepskyblue',
+    margin: 2,
   },
 
   dropdown_1: {
@@ -183,8 +240,17 @@ const styles = StyleSheet.create({
     color: 'navy',
     textAlignVertical: 'center',
   },
+  dropdown_3: {
+    width: 150,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 1,
+  },
   dropdown_4: {
     margin: 8,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 1,
   },
   dropdown_4_dropdown: {
     width: 100,

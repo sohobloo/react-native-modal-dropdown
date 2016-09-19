@@ -1,6 +1,6 @@
 {
   "name": "react-native-modal-dropdown",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A react-native dropdown component for both iOS and Android.",
   "main": "index.js",
   "repository": {
@@ -10,12 +10,17 @@
   "author": "sohobloo <sohobloo@live.cn> (https://github.com/sohobloo)",
   "license": "MIT",
   "keywords": [
+    "react",
     "react-component",
     "react-native",
+    "react-native-component",
     "ios",
     "android",
-    "dropdown",
     "modal",
-    "picker"
+    "dropdown",
+    "picker",
+    "select",
+    "selector",
+    "option"
   ]
 }

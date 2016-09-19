@@ -56,6 +56,7 @@ export default class ModalDropdown extends Component {
 
     this._button = null;
     this._buttonFrame = null;
+    this._nextValue = null;
     this._nextIndex = null;
 
     this.state = {
@@ -89,7 +90,7 @@ export default class ModalDropdown extends Component {
 
     this.setState({
       disabled: nextProps.disabled,
-      loading: nextProps.options == undefined,
+      loading: nextProps.options == null,
       buttonText: buttonText,
       selectedIndex: selectedIndex,
     });
@@ -110,6 +111,37 @@ export default class ModalDropdown extends Component {
         this._buttonFrame = {x: px, y: py, w: width, h: height};
       });
     }
+  }
+
+  show() {
+    this.setState({
+      showDropdown: true,
+    });
+  }
+
+  hide() {
+    this.setState({
+      showDropdown: false,
+    });
+  }
+
+  select(idx) {
+    var value = this.props.defaultValue;
+    if (idx == null || this.props.options == null || idx >= this.props.options.length) {
+      idx = this.props.defaultIndex;
+    }
+
+    if (idx >= 0) {
+      value = this.props.options[idx];
+    }
+
+    this._nextValue = value;
+    this._nextIndex = idx;
+
+    this.setState({
+      buttonText: value,
+      selectedIndex: idx,
+    });
   }
 
   _renderButton() {
