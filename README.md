@@ -2,7 +2,7 @@
 
 A react-native dropdown/picker/selector component for both Android & iOS.
 
-## Fuatures
+## Features
 
 - Pure JS.
 - Compatable with both iOS and Android.
