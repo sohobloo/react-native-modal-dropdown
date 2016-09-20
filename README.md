@@ -66,7 +66,7 @@ dropdownStyle      | object   | Yes      |           | Style of the dropdown lis
 renderRow          | func     | Yes      |           | Customize render option rows. Will render a default row if `null/undefined`.
 onDropdownWillShow | func     | Yes      |           | Trigger when dropdown will show by touching the button. Return `false` can cancel the event.
 onDropdownWillHide | func     | Yes      |           | Trigger when dropdown will hide by touching the button. Return `false` can cancel the event.
-onSelect           | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`.
+onSelect           | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. Return `false` can cancel the event.
 
 ### Methods
 
