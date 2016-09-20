@@ -61,7 +61,7 @@ defaultIndex       | number   | Yes      | -1        | Init selected index. `-1`
 defaultValue       | string   | Yes      | Please select... | Init text of the button.
 options            | arrayOf(string) | Yes      |           | Options. **The dropdown will show a loading indicator if `options` is `null/undefined`.**
 style              | object   | Yes      |           | Style of the button.
-testStyle          | object   | Yes      |           | Style of the button text.
+textStyle          | object   | Yes      |           | Style of the button text.
 dropdownStyle      | object   | Yes      |           | Style of the dropdown list.
 renderRow          | func     | Yes      |           | Customize render option rows. Will render a default row if `null/undefined`.
 onDropdownWillShow | func     | Yes      |           | Trigger when dropdown will show by touching the button. Return `false` can cancel the event.
