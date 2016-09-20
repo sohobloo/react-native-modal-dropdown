@@ -80,4 +80,4 @@ select(idx)      |  Select the specified option of the `idx`. **Won't trigger `o
 
 ## Next version
 
-Inspired by [d-a-n/react-native-modal-picker](https://github.com/d-a-n/react-native-modal-picker/), I'd like to add the featur to make this component as a wrapper too.
+Inspired by [d-a-n/react-native-modal-picker](https://github.com/d-a-n/react-native-modal-picker/), I'd like to add the feature to make this component as a wrapper too.
