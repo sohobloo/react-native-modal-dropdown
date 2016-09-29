@@ -25,7 +25,8 @@ You can find them in the example.
 - Add wrapper / container support
 
 Now you can use these component as a wrapper / container. Anything wrapped in it can be the trigger of the dropdown.
-<img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_4.gif?raw=true" width = "80" height = "96.25" alt="Demo 4"/>
+
+<img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_4.gif?raw=true" width = "120" height = "144.375" alt="Demo 4"/>
 
 ## Install
 ```sh
