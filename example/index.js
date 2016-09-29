@@ -27,10 +27,12 @@ class Demo extends Component {
     this.state = {
       dropdown_4_options: null,
       dropdown_4_defaultValue: 'loading...',
+      dropdown_6_icon_heart: true,
     };
   }
 
   render() {
+    let dropdown_6_icon = this.state.dropdown_6_icon_heart ? require('./images/heart.png') : require('./images/flower.png');
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -38,6 +40,13 @@ class Demo extends Component {
             <ModalDropdown style={styles.dropdown_1}
                            options={DEMO_OPTIONS_1}
             />
+            <ModalDropdown style={styles.dropdown_6}
+                           options={DEMO_OPTIONS_1}
+                           onSelect={(idx, value) => this._dropdown_6_onSelect(idx, value)}>
+              <Image style={styles.dropdown_6_image}
+                     source={dropdown_6_icon}
+              />
+            </ModalDropdown>
           </View>
           <View style={styles.cell}>
             <ModalDropdown style={styles.dropdown_2}
@@ -168,6 +177,12 @@ class Demo extends Component {
       return false;
     }
   }
+
+  _dropdown_6_onSelect(idx, value) {
+    this.setState({
+      dropdown_6_icon_heart: !this.state.dropdown_6_icon_heart,
+    })
+  }
 }
 
 const styles = StyleSheet.create({
@@ -199,6 +214,7 @@ const styles = StyleSheet.create({
   },
 
   dropdown_1: {
+    flex: 1,
     top: 32,
     left: 8
   },
@@ -264,6 +280,14 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 1,
     borderRadius: 1,
+  },
+  dropdown_6: {
+    flex: 1,
+    left: 8,
+  },
+  dropdown_6_image: {
+    width: 40,
+    height: 40,
   },
 });
 
