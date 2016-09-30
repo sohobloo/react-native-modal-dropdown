@@ -58,7 +58,6 @@ You can also render your option row by implement the `renderRow` function.
 
 ## API
 ### Props
-
 Prop               | Type     | Optional | Default   | Description
 ------------------- | -------- | -------- | --------- | -----------
 `disabled`          | bool     | Yes      | false     | disable/enable the component.
@@ -74,7 +73,6 @@ Prop               | Type     | Optional | Default   | Description
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 
 ### Methods
-
 Method            |  Description
 ----------------- |  -----------
 `updatePosition()`|  Manually update the position of the dropdown. ***If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`.***
@@ -85,5 +83,5 @@ Method            |  Description
 
 ## Next version
 
-I'd like to find a way to avoid custom calling `updatePosition` function but do it inside the component itself. **Any suggestion?**
-Is this necessary to open `renderSeperator` function of the dropdown list? Please let me know if you have this request. Thank you.
+- I'd like to find a way to avoid custom calling `updatePosition` function but do it inside the component itself. **Any suggestion?**
+- Is this necessary to open `renderSeperator` function of the dropdown list? Please let me know if you have this request. Thank you.
