@@ -85,5 +85,5 @@ Method            |  Description
 
 ## Next version
 
-I'd like the find a way to avoid custom calling `updatePosition` function but do it inside the component itself. **Any suggestion?**
+I'd like to find a way to avoid custom calling `updatePosition` function but do it inside the component itself. **Any suggestion?**
 Is this necessary to open `renderSeperator` function of the dropdown list? Please let me know if you have this request. Thank you.
