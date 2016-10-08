@@ -48,9 +48,11 @@ Use as a component:
 <ModalDropdown options={['option 1', 'option 2']}/>
 ```
 Use as a wrapper / container:
+```javascript
 <ModalDropdown options={['option 1', 'option 2']}>
   ...
 </ModalDropdown>
+```
 
 ### Customization
 Give the style props as your choice:
