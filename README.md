@@ -5,7 +5,7 @@ A react-native dropdown/picker/selector component for both Android & iOS.
 
 ## Features
 - Pure JS.
-- Compatable with both iOS and Android.
+- Compatible with both iOS and Android.
 - Auto position. (Won't be covered or clipped by the edge of screen.)
 - Zero configuration. (Options are needed of course or a loading indicator will show.)
 - Highly customizable. 
@@ -21,6 +21,10 @@ You can find them in the example.
 
 ## Update History
 
+### v0.3.0
+- Auto update position before show.
+- Mark `updatePosition` function as depreciated. (May be removed in next version.)
+
 ### v0.2.0
 - Add wrapper / container support
 
@@ -28,7 +32,7 @@ Now you can use these component as a wrapper / container. Anything wrapped in it
 
 <img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_4.gif?raw=true" width = "120" height = "144.375" alt="Demo 4"/>
 
-## Install
+## Installation
 ```sh
 npm i react-native-modal-dropdown --save
 ```
@@ -58,13 +62,12 @@ You can also render your option row by implement the `renderRow` function.
 
 ## API
 ### Props
-
-Prop               | Type     | Optional | Default   | Description
+Prop                | Type     | Optional | Default   | Description
 ------------------- | -------- | -------- | --------- | -----------
 `disabled`          | bool     | Yes      | false     | disable/enable the component.
 `defaultIndex`      | number   | Yes      | -1        | Init selected index. `-1`: None is selected. **This only change the highlight of the dropdown row, you have to give a `defaultValue` to change the init text.**
 `defaultValue`      | string   | Yes      | Please select... | Init text of the button. **Invalid in wrapper mode.**
-`options`           | arrayOf(string) | Yes |         | Options. **The dropdown will show a loading indicator if `options` is `null`/`undefined`.**
+`options`           | arrayOf(string)| Yes|         | Options. **The dropdown will show a loading indicator if `options` is `null`/`undefined`.**
 `style`             | object   | Yes      |           | Style of the button.
 `textStyle`         | object   | Yes      |           | Style of the button text. **Invalid in wrapper mode.**
 `dropdownStyle`     | object   | Yes      |           | Style of the dropdown list.
@@ -74,16 +77,13 @@ Prop               | Type     | Optional | Default   | Description
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 
 ### Methods
-
 Method            |  Description
 ----------------- |  -----------
-`updatePosition()`|  Manually update the position of the dropdown. ***If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`.***
+`updatePosition()`| ***Depreciated since v0.3.0. May be removed in next version.*** Manually update the position of the dropdown. ~~If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`.~~
 `show()`          |  Show the dropdown. **Won't trigger `onDropdownWillShow`.**
 `hide()`          |  Hide the dropdown. **Won't trigger `onDropdownWillHide`.**
 `select(idx)`     |  Select the specified option of the `idx`. **Won't trigger `onSelect`.**
 
-
 ## Next version
-
-I'd like the find a way to avoid custom calling `updatePosition` function but do it inside the component itself. **Any suggestion?**
+Any suggestion is welcome.
 Is this necessary to open `renderSeperator` function of the dropdown list? Please let me know if you have this request. Thank you.
