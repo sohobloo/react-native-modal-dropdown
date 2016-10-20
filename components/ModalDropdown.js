@@ -46,7 +46,6 @@ export default class ModalDropdown extends Component {
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
     onSelect: PropTypes.func,
-    //onClose: PropTypes.func,
   };
 
   constructor(props) {
@@ -66,14 +65,6 @@ export default class ModalDropdown extends Component {
       buttonText: props.defaultValue,
       selectedIndex: props.defaultIndex,
     };
-  }
-
-  componentDidMount() {
-    setTimeout(this.updatePosition, 0);
-  }
-
-  componentDidUpdate() {
-    setTimeout(this.updatePosition, 0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -106,16 +97,23 @@ export default class ModalDropdown extends Component {
   }
 
   updatePosition() {
+    console.warn(`[ModalDropdown]'updatePosition' is depreciated. You don't need to call this function anymore and it will do nothing. This function will be removed in next version.`);
+  }
+
+  _updatePosition(callback) {
     if (this._button && this._button.measure) {
       this._button.measure((fx, fy, width, height, px, py) => {
         this._buttonFrame = {x: px, y: py, w: width, h: height};
+        callback && callback();
       });
     }
   }
 
   show() {
-    this.setState({
-      showDropdown: true,
+    this._updatePosition(() => {
+      this.setState({
+        showDropdown: true,
+      });
     });
   }
 
@@ -167,9 +165,7 @@ export default class ModalDropdown extends Component {
   _onButtonPress() {
     if (!this.props.onDropdownWillShow ||
       this.props.onDropdownWillShow() !== false) {
-      this.setState({
-        showDropdown: true,
-      });
+      this.show();
     }
   }
 
@@ -228,18 +224,14 @@ export default class ModalDropdown extends Component {
   _onRequestClose() {
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
-      this.setState({
-        showDropdown: false,
-      });
+      this.hide();
     }
   }
 
   _onModalPress() {
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
-      this.setState({
-        showDropdown: false,
-      });
+      this.hide();
     }
   }
 

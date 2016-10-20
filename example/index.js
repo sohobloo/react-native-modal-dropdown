@@ -62,10 +62,9 @@ class Demo extends Component {
                       style={styles.scrollView}
                       contentContainerStyle={styles.contentContainer}
                       showsVerticalScrollIndicator={true}
-                      onScroll={this._dropdown_3_updatePosition.bind(this)}
                       scrollEventThrottle={1}>
             <Text>
-              {'You have to update dropdown position after scroll.'}
+              {'Scroll view example.'}
             </Text>
             <ModalDropdown ref={el => this._dropdown_3 = el}
                            style={styles.dropdown_3}
@@ -129,10 +128,6 @@ class Demo extends Component {
         </Text>
       </View>
     );
-  }
-
-  _dropdown_3_updatePosition() {
-    this._dropdown_3 && this._dropdown_3.updatePosition();
   }
 
   _dropdown_4_willShow() {
