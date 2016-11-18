@@ -21,7 +21,7 @@ You can find them in the example.
 
 ## Update History
 
-### v3.0.1
+### v0.3.1
 - Fix bug: [\#6](https://github.com/sohobloo/react-native-modal-dropdown/issues/6) Can not specify `height` style for `dropdownStyle`.
 - Remove `updatePosition` function.
 
