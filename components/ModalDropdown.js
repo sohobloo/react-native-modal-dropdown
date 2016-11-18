@@ -42,6 +42,7 @@ export default class ModalDropdown extends Component {
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 
     renderRow: PropTypes.func,
+    renderSeparator: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -50,8 +51,6 @@ export default class ModalDropdown extends Component {
 
   constructor(props) {
     super(props);
-
-    this.updatePosition = this.updatePosition.bind(this);
 
     this._button = null;
     this._buttonFrame = null;
@@ -242,7 +241,7 @@ export default class ModalDropdown extends Component {
       <ListView style={styles.list}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow.bind(this)}
-                renderSeparator={this._renderSeparator.bind(this)}
+                renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
       />
     );
@@ -291,7 +290,6 @@ export default class ModalDropdown extends Component {
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    if (rowID === this.props.options.length - 1) return;
     let key = `spr_${rowID}`;
     return (<View style={styles.separator}
                   key={key}
