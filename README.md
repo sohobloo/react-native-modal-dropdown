@@ -8,18 +8,22 @@ A react-native dropdown/picker/selector component for both Android & iOS.
 - Compatible with both iOS and Android.
 - Auto position. (Won't be covered or clipped by the edge of screen.)
 - Zero configuration. (Options are needed of course or a loading indicator will show.)
-- Highly customizable. 
+- Highly customizable.
 - Controllable with API by code. (Show/Hide/Select)
 - Change everything into a dropdown list trigger.
 
 ## Demo
 <img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_1.gif?raw=true" width = "160" height = "287.5" alt="Demo 1"/>
 <img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_2.gif?raw=true" width = "160" height = "287.5" alt="Demo 2"/>
-<img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_3.gif?raw=true" width = "160" height = "287.5" alt="Demo 3"/> 
+<img src="https://github.com/sohobloo/react-native-modal-dropdown/blob/master/docs/demo_3.gif?raw=true" width = "160" height = "287.5" alt="Demo 3"/>
 
 You can find them in the example.
 
 ## Update History
+
+### v3.0.1
+- Fix bug: [\#6](https://github.com/sohobloo/react-native-modal-dropdown/issues/6) Can not specify `height` style for `dropdownStyle`.
+- Remove `updatePosition` function.
 
 ### v0.3.0
 - Auto update position before show.

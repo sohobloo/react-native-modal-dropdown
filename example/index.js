@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 
 import ModalDropdown from 'react-native-modal-dropdown';
-//import ModalDropdown from './ModalDropdown';
+// import ModalDropdown from './ModalDropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
 
@@ -38,6 +38,7 @@ class Demo extends Component {
         <View style={styles.row}>
           <View style={styles.cell}>
             <ModalDropdown style={styles.dropdown_1}
+                           dropdownStyle={styles.test}
                            options={DEMO_OPTIONS_1}
             />
             <ModalDropdown style={styles.dropdown_6}
@@ -233,6 +234,7 @@ const styles = StyleSheet.create({
   },
   dropdown_2_dropdown: {
     width: 150,
+    height: 300,
     borderColor: 'cornflowerblue',
     borderWidth: 2,
     borderRadius: 3,
