@@ -89,11 +89,9 @@ Prop                | Type     | Optional | Default   | Description
 ### Methods
 Method            |  Description
 ----------------- |  -----------
-`updatePosition()`| ***Depreciated since v0.3.0. May be removed in next version.*** Manually update the position of the dropdown. ~~If your dropdown is within a scroll view, you have to call this method in `onScroll` function of the `scrollView`.~~
 `show()`          |  Show the dropdown. **Won't trigger `onDropdownWillShow`.**
 `hide()`          |  Hide the dropdown. **Won't trigger `onDropdownWillHide`.**
-`select(idx)`     |  Select the specified option of the `idx`. **Won't trigger `onSelect`.**
+`select(idx)`     |  Select the specified option of the `idx`. Select `-1` will reset it to display `defaultValue`. **Won't trigger `onSelect`.**
 
 ## Next version
 Any suggestion is welcome.
-Is this necessary to open `renderSeperator` function of the dropdown list? Please let me know if you have this request. Thank you.

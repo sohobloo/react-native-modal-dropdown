@@ -12,6 +12,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
 } from 'react-native';
 
@@ -120,15 +121,17 @@ class Demo extends Component {
     let icon = highlighted ? require('./images/heart.png') : require('./images/flower.png');
     let evenRow = rowID % 2;
     return (
-      <View style={[styles.dropdown_2_row, evenRow && {backgroundColor: 'lemonchiffon'}]}>
-        <Image style={styles.dropdown_2_image}
-               mode='stretch'
-               source={icon}
-        />
-        <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
-          {rowData}
-        </Text>
-      </View>
+      <TouchableHighlight underlayColor='cornflowerblue'>
+        <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
+          <Image style={styles.dropdown_2_image}
+                 mode='stretch'
+                 source={icon}
+          />
+          <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
+            {rowData}
+          </Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 
