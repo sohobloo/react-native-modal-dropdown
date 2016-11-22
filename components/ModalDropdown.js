@@ -206,7 +206,7 @@ export default class ModalDropdown extends Component {
       style.left = this._buttonFrame.x;
     } else {
       let dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
-        (this.props.style && StyleSheet.flatten(this.props.style.width)) || -1;
+        (this.props.style && StyleSheet.flatten(this.props.style).width) || -1;
       if (dropdownWidth !== -1) {
         style.width = dropdownWidth;
       }
