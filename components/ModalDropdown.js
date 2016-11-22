@@ -262,10 +262,10 @@ export default class ModalDropdown extends Component {
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
     return (
-      <TouchableHighlight key={key}
+      <TouchableOpacity key={key}
                           onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow);}}>
         {row}
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
@@ -301,6 +301,8 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     justifyContent: 'center',
+    marginLeft:20,
+    height:50,
   },
   buttonText: {
     fontSize: 12,
