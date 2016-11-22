@@ -21,6 +21,10 @@ You can find them in the example.
 
 ## Update History
 
+### v0.3.2
+- Fix bug: [\#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/9) *undefined is not an object (evaluating '_this.updatePosition.bind')* in v0.3.1.
+- Fix bug: Wrong width of dropdown in very few cases.
+
 ### v0.3.1
 - Fix bug: [\#6](https://github.com/sohobloo/react-native-modal-dropdown/issues/6) Can not specify `height` style for `dropdownStyle`.
 - Remove `updatePosition` function.

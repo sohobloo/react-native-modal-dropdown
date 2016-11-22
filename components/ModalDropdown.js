@@ -51,8 +51,6 @@ export default class ModalDropdown extends Component {
   constructor(props) {
     super(props);
 
-    this.updatePosition = this.updatePosition.bind(this);
-
     this._button = null;
     this._buttonFrame = null;
     this._nextValue = null;
@@ -207,7 +205,7 @@ export default class ModalDropdown extends Component {
       style.left = this._buttonFrame.x;
     } else {
       let dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
-        (this.props.style && StyleSheet.flatten(this.props.style.width)) || -1;
+        (this.props.style && StyleSheet.flatten(this.props.style).width) || -1;
       if (dropdownWidth !== -1) {
         style.width = dropdownWidth;
       }
