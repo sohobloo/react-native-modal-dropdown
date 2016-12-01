@@ -44,6 +44,7 @@ export default class ModalDropdown extends Component {
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 
+    adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
 
@@ -170,7 +171,6 @@ export default class ModalDropdown extends Component {
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
       let frameStyle = this._calcPosition();
-      console.log(`frameStyle={width:${frameStyle.width}, height:${frameStyle.height}, top:${frameStyle.top}, left:${frameStyle.left}}`);
       return (
         <Modal animationType='fade'
                transparent={true}
@@ -214,6 +214,10 @@ export default class ModalDropdown extends Component {
         style.width = dropdownWidth;
       }
       style.right = rightSpace - this._buttonFrame.w;
+    }
+
+    if (this.props.adjustFrame) {
+      style = this.props.adjustFrame(style) || style;
     }
 
     return style;

@@ -70,6 +70,7 @@ class Demo extends Component {
             <ModalDropdown ref={el => this._dropdown_3 = el}
                            style={styles.dropdown_3}
                            options={DEMO_OPTIONS_1}
+                           adjustFrame={style => this._dropdown_3_adjustFrame(style)}
             />
           </ScrollView>
         </View>
@@ -141,6 +142,13 @@ class Demo extends Component {
     />);
   }
 
+  _dropdown_3_adjustFrame(style) {
+    console.log(`frameStyle={width:${style.width}, height:${style.height}, top:${style.top}, left:${style.left}}`);
+    style.top -= 15;
+    style.left += 150;
+    return style;
+  }
+
   _dropdown_4_willShow() {
     setTimeout(() => this.setState({
       dropdown_4_options: DEMO_OPTIONS_1,
@@ -156,6 +164,7 @@ class Demo extends Component {
   }
 
   _dropdown_4_onSelect(idx, value) {
+    // BUG: alert in a modal will auto dismiss and causes crash after reload and touch. @sohobloo 2016-12-1
     alert(`idx=${idx}, value='${value}'`);
   }
 
