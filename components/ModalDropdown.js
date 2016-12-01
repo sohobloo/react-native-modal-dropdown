@@ -40,9 +40,9 @@ export default class ModalDropdown extends Component {
     defaultValue: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.string),
 
-    style: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
-    dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+    style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
