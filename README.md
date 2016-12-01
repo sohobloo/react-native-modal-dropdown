@@ -21,13 +21,13 @@ You can find them in the example.
 
 ## Update History
 
-### v0.4.0-rc.2
-- Enhancement: Compatible with `react-native` v0.36.0 which has a [break change](https://github.com/facebook/react-native/commit/0a9b6bedb312eba22c5bc11498b1cc41363e5f27) causes the default button with zero size.
-
-### v0.4.0-rc.1
-- New feature: [\#11](https://github.com/sohobloo/react-native-modal-dropdown/issues/11) Open `renderSeparator` prop API.
+### v0.4.0
 - New feature:
 [\#10](https://github.com/sohobloo/react-native-modal-dropdown/issues/10) Support touchable component in `renderRow`.
+- New feature: [\#11](https://github.com/sohobloo/react-native-modal-dropdown/issues/11) Open `renderSeparator` prop API.
+- New feature: Add `adjustFrame` prop for user to adjust the frame style of the dropdown in case the component calculate a mistake frame. \(refer to [#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/5)\) \([code sample](https://github.com/sohobloo/react-native-modal-dropdown/commit/0861d0a1bbe11c221696e8c664ef03ed475a3849#diff-f8c408fd257ff44ce4b01e5f8422b1e1)\)
+- Enhancement: Compatible with `react-native` v0.36.0 which has a [break change](https://github.com/facebook/react-native/commit/0a9b6bedb312eba22c5bc11498b1cc41363e5f27) causes the default button with zero size.
+- Enhancement: [#16](https://github.com/sohobloo/react-native-modal-dropdown/issues/16) Prevent from warnings if array of styles is used instead of stylesheet or object. Thanks to @NikolaBorislavovHristov .
 
 ### v0.3.2
 - Fix bug: [\#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/9) *undefined is not an object (evaluating '_this.updatePosition.bind')* in v0.3.1.
@@ -89,6 +89,7 @@ Prop                | Type     | Optional | Default   | Description
 `style`             | object   | Yes      |           | Style of the button.
 `textStyle`         | object   | Yes      |           | Style of the button text. **Invalid in wrapper mode.**
 `dropdownStyle`     | object   | Yes      |           | Style of the dropdown list.
+`adjustFrame`       | func     | Yes      |           | This is a callback after the frame of the dropdown have been calculated and before showing. You will receive a style object as argument with some of the props like `width` `height` `top` `left` and `right`. Change them to appropriate values that accord with your requirement and **make the new style as the return value of this function**.
 `renderRow`         | func     | Yes      |           | Customize render option rows. **Will render a default row if `null`/`undefined`.**
 `renderSeparator`   | func     | Yes      |           | Customize render dropdown list separators. **Will render a default thin gray line if `null`/`undefined`.**
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
