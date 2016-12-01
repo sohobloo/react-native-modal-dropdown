@@ -143,7 +143,7 @@ class Demo extends Component {
   }
 
   _dropdown_3_adjustFrame(style) {
-    console.log(`frameStyle={width:${style.width}, height:${style.height}, top:${style.top}, left:${style.left}}`);
+    console.log(`frameStyle={width:${style.width}, height:${style.height}, top:${style.top}, left:${style.left}, right:${style.right}}`);
     style.top -= 15;
     style.left += 150;
     return style;
