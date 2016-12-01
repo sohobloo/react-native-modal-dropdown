@@ -17,11 +17,14 @@ import {
   Text,
   ListView,
   TouchableWithoutFeedback,
+  TouchableWithNativeFeedback,
   TouchableOpacity,
   TouchableHighlight,
   Modal,
   ActivityIndicator,
 } from 'react-native';
+
+const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableWithNativeFeedback'];
 
 export default class ModalDropdown extends Component {
   static defaultProps = {
@@ -42,6 +45,7 @@ export default class ModalDropdown extends Component {
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 
     renderRow: PropTypes.func,
+    renderSeparator: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -240,7 +244,7 @@ export default class ModalDropdown extends Component {
       <ListView style={styles.list}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow.bind(this)}
-                renderSeparator={this._renderSeparator.bind(this)}
+                renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
       />
     );
@@ -261,9 +265,53 @@ export default class ModalDropdown extends Component {
         {rowData}
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
+    let preservedProps = {
+      key: key,
+      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
+    };
+    if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
+      var props = {...row.props};
+      props.key = preservedProps.key;
+      props.onPress = preservedProps.onPress;
+      switch (row.type.displayName) {
+        case 'TouchableHighlight': {
+          return (
+            <TouchableHighlight {...props}>
+              {row.props.children}
+            </TouchableHighlight>
+          );
+        }
+          break;
+        case 'TouchableOpacity': {
+          return (
+            <TouchableOpacity {...props}>
+              {row.props.children}
+            </TouchableOpacity>
+          );
+        }
+          break;
+        case 'TouchableWithoutFeedback': {
+          return (
+            <TouchableWithoutFeedback {...props}>
+              {row.props.children}
+            </TouchableWithoutFeedback>
+          );
+        }
+          break;
+        case 'TouchableWithNativeFeedback': {
+          return (
+            <TouchableWithNativeFeedback {...props}>
+              {row.props.children}
+            </TouchableWithNativeFeedback>
+          );
+        }
+          break;
+        default:
+          break;
+      }
+    }
     return (
-      <TouchableHighlight key={key}
-                          onPress={() => {this._onRowPress(rowData, sectionID, rowID, highlightRow);}}>
+      <TouchableHighlight {...preservedProps}>
         {row}
       </TouchableHighlight>
     );
@@ -289,7 +337,6 @@ export default class ModalDropdown extends Component {
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    if (rowID === this.props.options.length - 1) return;
     let key = `spr_${rowID}`;
     return (<View style={styles.separator}
                   key={key}
@@ -325,11 +372,12 @@ const styles = StyleSheet.create({
   },
   rowText: {
     flex: 1,
-    marginHorizontal: 6,
+    paddingHorizontal: 6,
     fontSize: 11,
     height: 32,
     lineHeight: 32,
     color: 'gray',
+    backgroundColor: 'white',
     textAlignVertical: 'center',
   },
   highlightedRowText: {

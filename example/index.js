@@ -12,11 +12,12 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView,
 } from 'react-native';
 
-import ModalDropdown from 'react-native-modal-dropdown';
-// import ModalDropdown from './ModalDropdown';
+// import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdown from './ModalDropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
 
@@ -55,6 +56,7 @@ class Demo extends Component {
                            dropdownStyle={styles.dropdown_2_dropdown}
                            options={DEMO_OPTIONS_1}
                            renderRow={this._dropdown_2_renderRow.bind(this)}
+                           renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             />
           </View>
         </View>
@@ -119,16 +121,26 @@ class Demo extends Component {
     let icon = highlighted ? require('./images/heart.png') : require('./images/flower.png');
     let evenRow = rowID % 2;
     return (
-      <View style={[styles.dropdown_2_row, evenRow && {backgroundColor: 'lemonchiffon'}]}>
-        <Image style={styles.dropdown_2_image}
-               mode='stretch'
-               source={icon}
-        />
-        <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
-          {rowData}
-        </Text>
-      </View>
+      <TouchableHighlight underlayColor='cornflowerblue'>
+        <View style={[styles.dropdown_2_row, {backgroundColor: evenRow ? 'lemonchiffon' : 'white'}]}>
+          <Image style={styles.dropdown_2_image}
+                 mode='stretch'
+                 source={icon}
+          />
+          <Text style={[styles.dropdown_2_row_text, highlighted && {color: 'mediumaquamarine'}]}>
+            {rowData}
+          </Text>
+        </View>
+      </TouchableHighlight>
     );
+  }
+
+  _dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
+    if (rowID == DEMO_OPTIONS_1.length - 1) return;
+    let key = `spr_${rowID}`;
+    return (<View style={styles.dropdown_2_separator}
+                  key={key}
+    />);
   }
 
   _dropdown_4_willShow() {
@@ -255,6 +267,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'navy',
     textAlignVertical: 'center',
+  },
+  dropdown_2_separator: {
+    height: 1,
+    backgroundColor: 'cornflowerblue',
   },
   dropdown_3: {
     width: 150,
