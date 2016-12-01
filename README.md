@@ -21,6 +21,14 @@ You can find them in the example.
 
 ## Update History
 
+### v0.4.0-rc.2
+- Enhancement: Compatible with `react-native` v0.36.0 which has a [break change](https://github.com/facebook/react-native/commit/0a9b6bedb312eba22c5bc11498b1cc41363e5f27) causes the default button with zero size.
+
+### v0.4.0-rc.1
+- New feature: [\#11](https://github.com/sohobloo/react-native-modal-dropdown/issues/11) Open `renderSeparator` prop API.
+- New feature:
+[\#10](https://github.com/sohobloo/react-native-modal-dropdown/issues/10) Support touchable component in `renderRow`.
+
 ### v0.3.2
 - Fix bug: [\#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/9) *undefined is not an object (evaluating '_this.updatePosition.bind')* in v0.3.1.
 - Fix bug: Wrong width of dropdown in very few cases.
@@ -42,7 +50,7 @@ Now you can use these component as a wrapper / container. Anything wrapped in it
 
 ## Installation
 ```sh
-npm i react-native-modal-dropdown --save
+npm i react-native-modal-dropdown -S
 ```
 
 ## Usage
@@ -68,7 +76,7 @@ Give the style props as your choice:
 - `textStyle`: Change the style of text of the button. *Invalid in wrapper mode.*
 - `dropdownStyle`: Change the style of dropdown container.
 
-You can also render your option row by implement the `renderRow` function.
+You can also render your option row and row separator by implement `renderRow` and `renderSeparator` function.
 
 ## API
 ### Props
@@ -82,6 +90,7 @@ Prop                | Type     | Optional | Default   | Description
 `textStyle`         | object   | Yes      |           | Style of the button text. **Invalid in wrapper mode.**
 `dropdownStyle`     | object   | Yes      |           | Style of the dropdown list.
 `renderRow`         | func     | Yes      |           | Customize render option rows. **Will render a default row if `null`/`undefined`.**
+`renderSeparator`   | func     | Yes      |           | Customize render dropdown list separators. **Will render a default thin gray line if `null`/`undefined`.**
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**

@@ -16,8 +16,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-// import ModalDropdown from 'react-native-modal-dropdown';
-import ModalDropdown from './ModalDropdown';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
 
@@ -39,7 +38,6 @@ class Demo extends Component {
         <View style={styles.row}>
           <View style={styles.cell}>
             <ModalDropdown style={styles.dropdown_1}
-                           dropdownStyle={styles.test}
                            options={DEMO_OPTIONS_1}
             />
             <ModalDropdown style={styles.dropdown_6}
@@ -205,7 +203,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: StyleSheet.hairlineWidth,
   },
-
   scrollView: {
     flex: 1,
   },
@@ -224,7 +221,7 @@ const styles = StyleSheet.create({
   dropdown_1: {
     flex: 1,
     top: 32,
-    left: 8
+    left: 8,
   },
   dropdown_2: {
     alignSelf: 'flex-end',
@@ -288,7 +285,6 @@ const styles = StyleSheet.create({
     width: 100,
   },
   dropdown_5: {
-    alignSelf: 'flex-end',
     margin: 8,
     borderColor: 'lightgray',
     borderWidth: 1,

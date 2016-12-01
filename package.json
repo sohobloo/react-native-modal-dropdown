@@ -1,17 +1,7 @@
 {
   "name": "react-native-modal-dropdown",
-  "version": "0.3.2",
+  "version": "0.4.0-rc.2",
   "description": "A react-native dropdown component for both iOS and Android.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sohobloo/react-native-modal-dropdown.git"
-  },
-  "author": "sohobloo <sohobloo@live.cn> (https://github.com/sohobloo)",
-  "license": "MIT",
   "keywords": [
     "react",
     "react-component",
@@ -25,5 +15,20 @@
     "select",
     "selector",
     "option"
-  ]
+  ],
+  "homepage": "https://github.com/sohobloo/react-native-modal-dropdown",
+  "bugs": {
+    "url": "https://github.com/sohobloo/react-native-modal-dropdown/issues",
+    "email": "sohobloo@live.cn"
+  },
+  "license": "MIT",
+  "author": "sohobloo <sohobloo@live.cn> (https://github.com/sohobloo)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sohobloo/react-native-modal-dropdown.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }

@@ -346,7 +346,7 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
   },
   buttonText: {
