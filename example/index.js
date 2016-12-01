@@ -285,7 +285,6 @@ const styles = StyleSheet.create({
     width: 100,
   },
   dropdown_5: {
-    alignSelf: 'flex-end',
     margin: 8,
     borderColor: 'lightgray',
     borderWidth: 1,

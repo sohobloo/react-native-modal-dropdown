@@ -21,6 +21,9 @@ You can find them in the example.
 
 ## Update History
 
+### v0.4.0-rc.2
+- Enhancement: Compatible with `react-native` v0.36.0 which has a [break change](https://github.com/facebook/react-native/commit/0a9b6bedb312eba22c5bc11498b1cc41363e5f27) causes the default button with zero size.
+
 ### v0.4.0-rc.1
 - New feature: [\#11](https://github.com/sohobloo/react-native-modal-dropdown/issues/11) Open `renderSeparator` prop API.
 - New feature:
