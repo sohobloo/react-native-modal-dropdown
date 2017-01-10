@@ -278,7 +278,8 @@ export default class ModalDropdown extends Component {
       props.key = preservedProps.key;
       props.onPress = preservedProps.onPress;
       switch (row.type.displayName) {
-        case 'TouchableHighlight': {
+        case 'TouchableHighlight':
+        {
           return (
             <TouchableHighlight {...props}>
               {row.props.children}
@@ -286,7 +287,8 @@ export default class ModalDropdown extends Component {
           );
         }
           break;
-        case 'TouchableOpacity': {
+        case 'TouchableOpacity':
+        {
           return (
             <TouchableOpacity {...props}>
               {row.props.children}
@@ -294,7 +296,8 @@ export default class ModalDropdown extends Component {
           );
         }
           break;
-        case 'TouchableWithoutFeedback': {
+        case 'TouchableWithoutFeedback':
+        {
           return (
             <TouchableWithoutFeedback {...props}>
               {row.props.children}
@@ -302,7 +305,8 @@ export default class ModalDropdown extends Component {
           );
         }
           break;
-        case 'TouchableWithNativeFeedback': {
+        case 'TouchableWithNativeFeedback':
+        {
           return (
             <TouchableWithNativeFeedback {...props}>
               {row.props.children}
@@ -350,18 +354,17 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    flexGrow: 1,
     justifyContent: 'center',
   },
   buttonText: {
     fontSize: 12,
   },
   modal: {
-    flex: 1,
+    flexGrow: 1,
   },
   dropdown: {
     position: 'absolute',
-    height: (32 + StyleSheet.hairlineWidth) * 5,
+    height: (33 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
     borderRadius: 2,
@@ -372,14 +375,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   list: {
-    flex: 1,
+    //flexGrow: 1,
   },
   rowText: {
-    flex: 1,
     paddingHorizontal: 6,
+    paddingVertical: 10,
     fontSize: 11,
-    height: 32,
-    lineHeight: 32,
     color: 'gray',
     backgroundColor: 'white',
     textAlignVertical: 'center',

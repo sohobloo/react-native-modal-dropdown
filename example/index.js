@@ -242,8 +242,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'cornflowerblue',
   },
   dropdown_2_text: {
-    height: 40,
-    lineHeight: 40,
+    marginVertical: 10,
     marginHorizontal: 6,
     fontSize: 18,
     color: 'white',
@@ -258,7 +257,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   dropdown_2_row: {
-    flex: 1,
     flexDirection: 'row',
     height: 40,
     alignItems: 'center',
