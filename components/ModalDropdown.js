@@ -38,7 +38,7 @@ export default class ModalDropdown extends Component {
     disabled: PropTypes.bool,
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.string),
+    options: PropTypes.array,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -71,7 +71,7 @@ export default class ModalDropdown extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue;
+    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
     var selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
       selectedIndex = nextProps.defaultIndex;
@@ -129,7 +129,7 @@ export default class ModalDropdown extends Component {
     }
 
     if (idx >= 0) {
-      value = this.props.options[idx];
+      value = this.props.options[idx].toString();
     }
 
     this._nextValue = value;
@@ -332,7 +332,7 @@ export default class ModalDropdown extends Component {
       this._nextValue = rowData;
       this._nextIndex = rowID;
       this.setState({
-        buttonText: rowData,
+        buttonText: rowData.toString(),
         selectedIndex: rowID,
       });
     }
