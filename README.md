@@ -21,13 +21,17 @@ You can find them in the example.
 
 ## Update History
 
+### v0.4.1
+- Fix bug: [\#27](https://github.com/sohobloo/react-native-modal-dropdown/issues/27) Fix a flex style bug.
+- Enhancement: [\#26](https://github.com/sohobloo/react-native-modal-dropdown/issues/26) Support object type of options.
+
 ### v0.4.0
 - New feature:
 [\#10](https://github.com/sohobloo/react-native-modal-dropdown/issues/10) Support touchable component in `renderRow`.
 - New feature: [\#11](https://github.com/sohobloo/react-native-modal-dropdown/issues/11) Open `renderSeparator` prop API.
 - New feature: Add `adjustFrame` prop for user to adjust the frame style of the dropdown in case the component calculate a mistake frame. \(refer to [#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/5)\) \([code sample](https://github.com/sohobloo/react-native-modal-dropdown/commit/0861d0a1bbe11c221696e8c664ef03ed475a3849#diff-f8c408fd257ff44ce4b01e5f8422b1e1)\)
 - Enhancement: Compatible with `react-native` v0.36.0 which has a [break change](https://github.com/facebook/react-native/commit/0a9b6bedb312eba22c5bc11498b1cc41363e5f27) causes the default button with zero size.
-- Enhancement: [#16](https://github.com/sohobloo/react-native-modal-dropdown/issues/16) Prevent from warnings if array of styles is used instead of stylesheet or object. Thanks to @NikolaBorislavovHristov .
+- Enhancement: [\#16](https://github.com/sohobloo/react-native-modal-dropdown/issues/16) Prevent from warnings if array of styles is used instead of stylesheet or object. Thanks to @NikolaBorislavovHristov .
 
 ### v0.3.2
 - Fix bug: [\#9](https://github.com/sohobloo/react-native-modal-dropdown/issues/9) *undefined is not an object (evaluating '_this.updatePosition.bind')* in v0.3.1.
@@ -85,7 +89,7 @@ Prop                | Type     | Optional | Default   | Description
 `disabled`          | bool     | Yes      | false     | disable/enable the component.
 `defaultIndex`      | number   | Yes      | -1        | Init selected index. `-1`: None is selected. **This only change the highlight of the dropdown row, you have to give a `defaultValue` to change the init text.**
 `defaultValue`      | string   | Yes      | Please select... | Init text of the button. **Invalid in wrapper mode.**
-`options`           | arrayOf(string)| Yes|         | Options. **The dropdown will show a loading indicator if `options` is `null`/`undefined`.**
+`options`           | array    | Yes      |           | Options. **The dropdown will show a loading indicator if `options` is `null`/`undefined`.**
 `style`             | object   | Yes      |           | Style of the button.
 `textStyle`         | object   | Yes      |           | Style of the button text. **Invalid in wrapper mode.**
 `dropdownStyle`     | object   | Yes      |           | Style of the dropdown list.
