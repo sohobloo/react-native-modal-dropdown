@@ -146,6 +146,7 @@ export default class ModalDropdown extends Component {
     return (
       <TouchableOpacity ref={button => this._button = button}
                         disabled={this.props.disabled}
+                        accessible={this.props.accessible}
                         onPress={this._onButtonPress.bind(this)}>
         {
           this.props.children ||
@@ -272,6 +273,7 @@ export default class ModalDropdown extends Component {
       this.props.renderRow(rowData, rowID, highlighted);
     let preservedProps = {
       key: key,
+      accessible: this.props.accessible,
       onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
