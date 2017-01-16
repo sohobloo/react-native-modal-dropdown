@@ -39,7 +39,7 @@ export default class ModalDropdown extends Component {
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
     options: PropTypes.array,
-
+    accessible: PropTypes.bool,
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -63,6 +63,7 @@ export default class ModalDropdown extends Component {
 
     this.state = {
       disabled: props.disabled,
+      accessible: props.accessible,
       loading: props.options == null,
       showDropdown: false,
       buttonText: props.defaultValue,
@@ -145,6 +146,7 @@ export default class ModalDropdown extends Component {
     return (
       <TouchableOpacity ref={button => this._button = button}
                         disabled={this.props.disabled}
+                        accessible={this.props.accessible}
                         onPress={this._onButtonPress.bind(this)}>
         {
           this.props.children ||
@@ -175,7 +177,7 @@ export default class ModalDropdown extends Component {
         <Modal animationType='fade'
                transparent={true}
                onRequestClose={this._onRequestClose.bind(this)}>
-          <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
+          <TouchableWithoutFeedback accessible={this.props.accessible} onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
                 {this.state.loading ? this._renderLoading() : this._renderDropdown()}
@@ -271,6 +273,7 @@ export default class ModalDropdown extends Component {
       this.props.renderRow(rowData, rowID, highlighted);
     let preservedProps = {
       key: key,
+      accessible: this.props.accessible,
       onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
