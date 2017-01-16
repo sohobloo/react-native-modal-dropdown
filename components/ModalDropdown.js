@@ -39,6 +39,7 @@ export default class ModalDropdown extends Component {
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
     options: PropTypes.array,
+    accessible: PropTypes.boolean,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -63,6 +64,7 @@ export default class ModalDropdown extends Component {
 
     this.state = {
       disabled: props.disabled,
+      accessible: props.accessible,
       loading: props.options == null,
       showDropdown: false,
       buttonText: props.defaultValue,
@@ -175,7 +177,7 @@ export default class ModalDropdown extends Component {
         <Modal animationType='fade'
                transparent={true}
                onRequestClose={this._onRequestClose.bind(this)}>
-          <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
+          <TouchableWithoutFeedback accessible={this.props.accessible} onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
                 {this.state.loading ? this._renderLoading() : this._renderDropdown()}
