@@ -47,10 +47,12 @@ export default class ModalDropdown extends Component {
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
+    showsVerticalScrollIndicator: PropTypes.bool,
+    scrollEnabled: PropTypes.bool,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
-    onSelect: PropTypes.func,
+    onSelect: PropTypes.func
   };
 
   constructor(props) {
@@ -252,6 +254,8 @@ export default class ModalDropdown extends Component {
                 renderRow={this._renderRow.bind(this)}
                 renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
+                showsVerticalScrollIndicator: {this.props.showsVerticalScrollIndicator}
+                scrollEnabled: {this.props.scrollEnabled}
       />
     );
   }
