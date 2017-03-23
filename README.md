@@ -22,8 +22,9 @@ You can find them in the example.
 ## Update History
 
 ### v0.4.2
-- Add `animated` option.
+- Add `animated` option. #44
 - Add `showsVerticalScrollIndicator` option
+- Add landscape orientation support. #45
 
 ### v0.4.1
 - Fix bug: [\#27](https://github.com/sohobloo/react-native-modal-dropdown/issues/27) Fix a flex style bug.
