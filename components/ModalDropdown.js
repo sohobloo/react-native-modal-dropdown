@@ -33,6 +33,7 @@ export default class ModalDropdown extends Component {
     defaultValue: PropTypes.string,
     options: PropTypes.array,
 
+    accessible: PropTypes.bool,
     animated: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
 
@@ -68,6 +69,7 @@ export default class ModalDropdown extends Component {
 
     this.state = {
       disabled: props.disabled,
+      accessible: props.accessible !== false,
       loading: props.options == null,
       showDropdown: false,
       buttonText: props.defaultValue,
@@ -150,6 +152,7 @@ export default class ModalDropdown extends Component {
     return (
       <TouchableOpacity ref={button => this._button = button}
                         disabled={this.props.disabled}
+                        accessible={this.props.accessible}
                         onPress={this._onButtonPress.bind(this)}>
         {
           this.props.children ||
@@ -182,7 +185,8 @@ export default class ModalDropdown extends Component {
                transparent={true}
                onRequestClose={this._onRequestClose.bind(this)}
                supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}>
-          <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
+          <TouchableWithoutFeedback accessible={this.props.accessible}
+                                    onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
                 {this.state.loading ? this._renderLoading() : this._renderDropdown()}
@@ -279,7 +283,8 @@ export default class ModalDropdown extends Component {
       this.props.renderRow(rowData, rowID, highlighted);
     let preservedProps = {
       key: key,
-      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow)
+      accessible: this.props.accessible,
+      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
       var props = {...row.props};

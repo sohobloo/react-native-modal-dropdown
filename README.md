@@ -105,6 +105,7 @@ Prop                | Type     | Optional | Default   | Description
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
+`accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
 
 ### Methods
 Method            |  Description
