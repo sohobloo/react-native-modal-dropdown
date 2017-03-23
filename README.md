@@ -21,6 +21,10 @@ You can find them in the example.
 
 ## Update History
 
+### v0.4.2
+- Add `animated` option.
+- Add `showsVerticalScrollIndicator` option
+
 ### v0.4.1
 - Fix bug: [\#27](https://github.com/sohobloo/react-native-modal-dropdown/issues/27) Fix a flex style bug.
 - Enhancement: [\#26](https://github.com/sohobloo/react-native-modal-dropdown/issues/26) Support object type of options.
@@ -86,10 +90,12 @@ You can also render your option row and row separator by implement `renderRow` a
 ### Props
 Prop                | Type     | Optional | Default   | Description
 ------------------- | -------- | -------- | --------- | -----------
-`disabled`          | bool     | Yes      | false     | disable/enable the component.
+`disabled`          | bool     | Yes      | false     | disable / enable the component.
 `defaultIndex`      | number   | Yes      | -1        | Init selected index. `-1`: None is selected. **This only change the highlight of the dropdown row, you have to give a `defaultValue` to change the init text.**
 `defaultValue`      | string   | Yes      | Please select... | Init text of the button. **Invalid in wrapper mode.**
 `options`           | array    | Yes      |           | Options. **The dropdown will show a loading indicator if `options` is `null`/`undefined`.**
+`animated`          | bool     | Yes      | true      | Disable / enable fade animation.
+`showsVerticalScrollIndicator` | bool | Yes | true    | Show / hide vertical scroll indicator.
 `style`             | object   | Yes      |           | Style of the button.
 `textStyle`         | object   | Yes      |           | Style of the button text. **Invalid in wrapper mode.**
 `dropdownStyle`     | object   | Yes      |           | Style of the dropdown list.

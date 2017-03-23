@@ -27,18 +27,14 @@ import {
 const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableWithNativeFeedback'];
 
 export default class ModalDropdown extends Component {
-  static defaultProps = {
-    disabled: false,
-    defaultIndex: -1,
-    defaultValue: 'Please select...',
-    options: null,
-  };
-
   static propTypes = {
     disabled: PropTypes.bool,
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
     options: PropTypes.array,
+
+    animated: PropTypes.bool,
+    showsVerticalScrollIndicator: PropTypes.bool,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -50,7 +46,16 @@ export default class ModalDropdown extends Component {
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
-    onSelect: PropTypes.func,
+    onSelect: PropTypes.func
+  };
+
+  static defaultProps = {
+    disabled: false,
+    defaultIndex: -1,
+    defaultValue: 'Please select...',
+    options: null,
+    animated: true,
+    showsVerticalScrollIndicator: true
   };
 
   constructor(props) {
@@ -66,7 +71,7 @@ export default class ModalDropdown extends Component {
       loading: props.options == null,
       showDropdown: false,
       buttonText: props.defaultValue,
-      selectedIndex: props.defaultIndex,
+      selectedIndex: props.defaultIndex
     };
   }
 
@@ -86,7 +91,7 @@ export default class ModalDropdown extends Component {
       disabled: nextProps.disabled,
       loading: nextProps.options == null,
       buttonText: buttonText,
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex
     });
   }
 
@@ -111,14 +116,14 @@ export default class ModalDropdown extends Component {
   show() {
     this._updatePosition(() => {
       this.setState({
-        showDropdown: true,
+        showDropdown: true
       });
     });
   }
 
   hide() {
     this.setState({
-      showDropdown: false,
+      showDropdown: false
     });
   }
 
@@ -137,7 +142,7 @@ export default class ModalDropdown extends Component {
 
     this.setState({
       buttonText: value,
-      selectedIndex: idx,
+      selectedIndex: idx
     });
   }
 
@@ -171,10 +176,12 @@ export default class ModalDropdown extends Component {
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
       let frameStyle = this._calcPosition();
+      let animationType = this.props.animated ? 'fade' : 'none';
       return (
-        <Modal animationType='fade'
+        <Modal animationType={animationType}
                transparent={true}
-               onRequestClose={this._onRequestClose.bind(this)}>
+               onRequestClose={this._onRequestClose.bind(this)}
+               supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}>
           <TouchableWithoutFeedback onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
@@ -203,7 +210,7 @@ export default class ModalDropdown extends Component {
     var style = {
       height: dropdownHeight,
       top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
-    }
+    };
 
     if (showInLeft) {
       style.left = this._buttonFrame.x;
@@ -250,20 +257,21 @@ export default class ModalDropdown extends Component {
                 renderRow={this._renderRow.bind(this)}
                 renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
+                showsVerticalScrollIndicator={this.props.showsVerticalScrollIndicator}
       />
     );
   }
 
   get _dataSource() {
     let ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
+      rowHasChanged: (r1, r2) => r1 !== r2
     });
     return ds.cloneWithRows(this.props.options);
   }
 
   _renderRow(rowData, sectionID, rowID, highlightRow) {
     let key = `row_${rowID}`;
-    let highlighted = rowID == this.state.selectedIndex
+    let highlighted = rowID == this.state.selectedIndex;
     let row = !this.props.renderRow ?
       (<Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
         {rowData}
@@ -271,7 +279,7 @@ export default class ModalDropdown extends Component {
       this.props.renderRow(rowData, rowID, highlighted);
     let preservedProps = {
       key: key,
-      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
+      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow)
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
       var props = {...row.props};
@@ -333,13 +341,13 @@ export default class ModalDropdown extends Component {
       this._nextIndex = rowID;
       this.setState({
         buttonText: rowData.toString(),
-        selectedIndex: rowID,
+        selectedIndex: rowID
       });
     }
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
       this.setState({
-        showDropdown: false,
+        showDropdown: false
       });
     }
   }
@@ -354,13 +362,13 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   buttonText: {
-    fontSize: 12,
+    fontSize: 12
   },
   modal: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   dropdown: {
     position: 'absolute',
@@ -369,10 +377,10 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderRadius: 2,
     backgroundColor: 'white',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   loading: {
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   list: {
     //flexGrow: 1,
@@ -383,13 +391,13 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: 'gray',
     backgroundColor: 'white',
-    textAlignVertical: 'center',
+    textAlignVertical: 'center'
   },
   highlightedRowText: {
-    color: 'black',
+    color: 'black'
   },
   separator: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: 'lightgray',
+    backgroundColor: 'lightgray'
   }
 });
