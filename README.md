@@ -107,7 +107,7 @@ Prop                | Type     | Optional | Default   | Description
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 `accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
-`imageSource` | `require('path\to\image')` | Yes |        | Allows for an image to the right of the button to indicate this is a drop dowm
+`imageSource` | `require('image path')` | Yes |        | Allows for an image to the right of the button to indicate this is a drop dowm
 
 ### Methods
 Method            |  Description
