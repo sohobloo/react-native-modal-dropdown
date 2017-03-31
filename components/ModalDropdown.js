@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   },
   rowText: {
     paddingHorizontal: 6,
-    paddingVertical: 10,
+    paddingVertical: 15,
     fontSize: 11,
     color: 'gray',
     backgroundColor: 'white',
