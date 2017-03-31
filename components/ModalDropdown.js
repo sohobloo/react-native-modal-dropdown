@@ -22,6 +22,8 @@ import {
   TouchableHighlight,
   Modal,
   ActivityIndicator,
+  Image,
+  ImageSourcePropType
 } from 'react-native';
 
 const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableWithNativeFeedback'];
@@ -40,6 +42,7 @@ export default class ModalDropdown extends Component {
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    imageSource: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
@@ -56,12 +59,11 @@ export default class ModalDropdown extends Component {
     defaultValue: 'Please select...',
     options: null,
     animated: true,
-    showsVerticalScrollIndicator: true
+    showsVerticalScrollIndicator: true,
   };
 
   constructor(props) {
     super(props);
-
     this._button = null;
     this._buttonFrame = null;
     this._nextValue = null;
@@ -158,10 +160,15 @@ export default class ModalDropdown extends Component {
           this.props.children ||
           (
             <View style={styles.button}>
-              <Text style={[styles.buttonText, this.props.textStyle]}
-                    numberOfLines={1}>
-                {this.state.buttonText}
-              </Text>
+              <View style={styles.buttonTextContainer}>
+                  <Text style={[styles.buttonText, this.props.textStyle]}
+                        numberOfLines={1}>
+                    {this.state.buttonText}
+                  </Text>
+              </View>
+              {this.props.imageSource && (<View style={styles.buttonImageContainer}>
+                  <Image source={this.props.imageSource} style={styles.buttonImage}/>
+              </View>)}
             </View>
           )
         }
@@ -367,10 +374,15 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: 'center'
+     justifyContent: 'center',
+     flexDirection: 'row'
+  },
+  buttonTextContainer: {
+      flexGrow: 10,
   },
   buttonText: {
-    fontSize: 12
+    fontSize: 12,
+    textAlign: 'left'
   },
   modal: {
     flexGrow: 1
@@ -404,5 +416,13 @@ const styles = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: 'lightgray'
+  },
+  buttonImageContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+},
+  buttonImage: {
+      resizeMode: 'contain'
   }
 });
