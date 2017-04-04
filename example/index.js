@@ -83,6 +83,8 @@ class Demo extends Component {
                            style={styles.dropdown_3}
                            options={DEMO_OPTIONS_1}
                            adjustFrame={style => this._dropdown_3_adjustFrame(style)}
+                           dropdownTextStyle={styles.dropdown_3_dropdownTextStyle}
+                           dropdownTextHighlightStyle={styles.dropdown_3_dropdownTextHighlightStyle}
             />
           </ScrollView>
         </View>
@@ -294,6 +296,14 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 1,
     borderRadius: 1,
+  },
+  dropdown_3_dropdownTextStyle: {
+    backgroundColor: '#000',
+    color: '#fff'
+  },
+  dropdown_3_dropdownTextHighlightStyle: {
+    backgroundColor: '#fff',
+    color: '#000'
   },
   dropdown_4: {
     margin: 8,
