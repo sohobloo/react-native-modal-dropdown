@@ -40,6 +40,8 @@ export default class ModalDropdown extends Component {
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
@@ -277,7 +279,13 @@ export default class ModalDropdown extends Component {
     let key = `row_${rowID}`;
     let highlighted = rowID == this.state.selectedIndex;
     let row = !this.props.renderRow ?
-      (<Text style={[styles.rowText, highlighted && styles.highlightedRowText]}>
+      (<Text style={[
+           styles.rowText,
+           this.props.dropdownTextStyle,
+           highlighted && styles.highlightedRowText,
+           highlighted && this.props.dropdownTextHighlightStyle
+         ]}
+         >
         {rowData}
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
