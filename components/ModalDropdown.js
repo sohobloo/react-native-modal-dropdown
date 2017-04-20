@@ -157,6 +157,10 @@ export default class ModalDropdown extends Component {
                         accessible={this.props.accessible}
                         onPress={this._onButtonPress.bind(this)}>
         {
+          this.props.dropdownIcon
+          ?
+          this.props.dropdownIcon
+          :
           this.props.children ||
           (
             <View style={styles.button}>
