@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    maxHeight: (33 + StyleSheet.hairlineWidth) * 5,
+    height: (33 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
     borderRadius: 2,
