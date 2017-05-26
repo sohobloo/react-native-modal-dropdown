@@ -17,14 +17,14 @@ import {
   Text,
   ListView,
   TouchableWithoutFeedback,
-  TouchableWithNativeFeedback,
+  TouchableNativeFeedback,
   TouchableOpacity,
   TouchableHighlight,
   Modal,
   ActivityIndicator,
 } from 'react-native';
 
-const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableWithNativeFeedback'];
+const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableNativeFeedback'];
 
 export default class ModalDropdown extends Component {
   static propTypes = {
@@ -188,6 +188,7 @@ export default class ModalDropdown extends Component {
                onRequestClose={this._onRequestClose.bind(this)}
                supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}>
           <TouchableWithoutFeedback accessible={this.props.accessible}
+                                    disabled={!this.state.showDropdown}
                                     onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
               <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
@@ -280,12 +281,12 @@ export default class ModalDropdown extends Component {
     let highlighted = rowID == this.state.selectedIndex;
     let row = !this.props.renderRow ?
       (<Text style={[
-           styles.rowText,
-           this.props.dropdownTextStyle,
-           highlighted && styles.highlightedRowText,
-           highlighted && this.props.dropdownTextHighlightStyle
-         ]}
-         >
+        styles.rowText,
+        this.props.dropdownTextStyle,
+        highlighted && styles.highlightedRowText,
+        highlighted && this.props.dropdownTextHighlightStyle
+      ]}
+      >
         {rowData}
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
@@ -326,12 +327,12 @@ export default class ModalDropdown extends Component {
           );
         }
           break;
-        case 'TouchableWithNativeFeedback':
+        case 'TouchableNativeFeedback':
         {
           return (
-            <TouchableWithNativeFeedback {...props}>
+            <TouchableNativeFeedback {...props}>
               {row.props.children}
-            </TouchableWithNativeFeedback>
+            </TouchableNativeFeedback>
           );
         }
           break;
