@@ -35,6 +35,7 @@ export default class ModalDropdown extends Component {
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
+    keyboardShouldPersistTaps: PropTypes.string,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -57,7 +58,8 @@ export default class ModalDropdown extends Component {
     defaultValue: 'Please select...',
     options: null,
     animated: true,
-    showsVerticalScrollIndicator: true
+    showsVerticalScrollIndicator: true,
+    keyboardShouldPersistTaps: 'never'
   };
 
   constructor(props) {
@@ -264,6 +266,7 @@ export default class ModalDropdown extends Component {
                 renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
                 automaticallyAdjustContentInsets={false}
                 showsVerticalScrollIndicator={this.props.showsVerticalScrollIndicator}
+                keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
       />
     );
   }
