@@ -19,9 +19,8 @@ You can find them in the example.
 
 ## Update History
 
-### v0.4.3
-- Add ability to style dropdown text. See `dropdownTextStyle` and `dropdownTextHighlightStyle`. Thanks to @evansiroky
-- Fix `TouchableWithNativeFeedback` should be `TouchableNativeFeedback`
+### v0.4.4
+- Expose `keyboardShouldPersistTaps` prop on dropdown (ListView). 
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
@@ -77,6 +76,7 @@ Prop                | Type     | Optional | Default   | Description
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 `accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
+`keyboardShouldPersistTaps`      |  | 'never'         | 
 
 ### Methods
 Method            |  Description
