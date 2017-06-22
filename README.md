@@ -76,7 +76,7 @@ Prop                | Type     | Optional | Default   | Description
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 `accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
-`keyboardShouldPersistTaps`      |  | 'never'         | 
+`keyboardShouldPersistTaps`    | enum('always', 'never', 'handled', false, true) | Yes | 'never' | See react-native `ScrollView` props
 
 ### Methods
 Method            |  Description
