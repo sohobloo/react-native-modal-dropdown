@@ -35,7 +35,7 @@ export default class ModalDropdown extends Component {
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
-    keyboardShouldPersistTaps: PropTypes.string,
+    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled', false, true]),
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
