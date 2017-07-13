@@ -6,7 +6,6 @@
 
 import React, {
   Component,
-  PropTypes,
 } from 'react';
 
 import {
@@ -23,6 +22,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+const PropTypes = require('prop-types');
+
 const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableNativeFeedback'];
 
 export default class ModalDropdown extends Component {
@@ -35,7 +36,7 @@ export default class ModalDropdown extends Component {
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
-    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled', false, true]),
+    keyboardShouldPersistTaps: PropTypes.string,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
