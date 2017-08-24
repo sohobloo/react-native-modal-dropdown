@@ -19,8 +19,9 @@ You can find them in the example.
 
 ## Update History
 
-### v0.4.4
-- Expose `keyboardShouldPersistTaps` prop on dropdown (ListView). 
+### v0.5.0
+- React 16 compatibility.
+- Fix [#84](https://github.com/sohobloo/react-native-modal-dropdown/issues/84)
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
@@ -76,7 +77,7 @@ Prop                | Type     | Optional | Default   | Description
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 `accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
-`keyboardShouldPersistTaps`    | enum('always', 'never', 'handled', false, true) | Yes | 'never' | See react-native `ScrollView` props
+`keyboardShouldPersistTaps`    | enum('always', 'never', 'handled') | Yes | 'never' | See react-native `ScrollView` props
 
 ### Methods
 Method            |  Description
