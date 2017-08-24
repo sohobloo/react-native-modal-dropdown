@@ -186,6 +186,7 @@ export default class ModalDropdown extends Component {
       let animationType = this.props.animated ? 'fade' : 'none';
       return (
         <Modal animationType={animationType}
+               visible={true}
                transparent={true}
                onRequestClose={this._onRequestClose.bind(this)}
                supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}>
