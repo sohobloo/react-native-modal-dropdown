@@ -76,7 +76,7 @@ export default class ModalDropdown extends Component {
       accessible: !!props.accessible,
       loading: props.options === null || props.options === undefined,
       showDropdown: false,
-      buttonText: props.defaultValue,
+      buttonText: props.defaultValue || 'Please select...',
       selectedIndex: props.defaultIndex
     };
   }
@@ -87,7 +87,7 @@ export default class ModalDropdown extends Component {
     if (selectedIndex < 0) {
       selectedIndex = nextProps.defaultIndex;
       if (selectedIndex < 0) {
-        buttonText = nextProps.defaultValue;
+        buttonText = nextProps.defaultValue || 'Please select...';
       }
     }
     this._nextValue = null;
@@ -134,7 +134,7 @@ export default class ModalDropdown extends Component {
   }
 
   select(idx) {
-    var value = this.props.defaultValue;
+    var value = this.props.defaultValue || 'Please select...';
     if (idx == null || this.props.options == null || idx >= this.props.options.length) {
       idx = this.props.defaultIndex;
     }
