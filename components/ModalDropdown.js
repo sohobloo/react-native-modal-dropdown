@@ -1,5 +1,6 @@
 /**
  * Created by sohobloo on 16/9/13.
+ * Forked and edited by b1gnasty in Nov 2017
  */
 
 'use strict';
@@ -134,13 +135,13 @@ export default class ModalDropdown extends Component {
   }
 
   select(idx) {
-    var value = this.props.defaultValue;
+    var value = this.props.defaultValue.toString();
     if (idx == null || this.props.options == null || idx >= this.props.options.length) {
       idx = this.props.defaultIndex;
     }
 
     if (idx >= 0) {
-      value = this.props.options[idx].toString();
+      value = this.props.options[idx].value.toString();
     }
 
     this._nextValue = value;
@@ -291,7 +292,7 @@ export default class ModalDropdown extends Component {
         highlighted && this.props.dropdownTextHighlightStyle
       ]}
       >
-        {rowData}
+        {rowData.label}
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
     let preservedProps = {
@@ -355,10 +356,10 @@ export default class ModalDropdown extends Component {
     if (!this.props.onSelect ||
       this.props.onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
-      this._nextValue = rowData;
+      this._nextValue = rowData.value;
       this._nextIndex = rowID;
       this.setState({
-        buttonText: rowData.toString(),
+        buttonText: rowData.label.toString(),
         selectedIndex: rowID
       });
     }
