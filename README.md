@@ -22,7 +22,6 @@ You can find them in the example.
 ### v0.5.0
 - React 16 compatibility.
 - Fix [#84](https://github.com/sohobloo/react-native-modal-dropdown/issues/84)  
-**Sorry for late. I'm looking for a new job these days. Any help? :-(**
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
