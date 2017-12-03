@@ -31,8 +31,10 @@ export default class ModalDropdown extends Component {
     disabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     defaultIndex: PropTypes.number,
-    defaultValue: PropTypes.string,
+    defaultValue: PropTypes.any,
     options: PropTypes.array,
+    defaultButtonText: PropTypes.string,
+    valueToButtonText: PropTypes.func,
 
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
@@ -58,7 +60,8 @@ export default class ModalDropdown extends Component {
     disabled: false,
     scrollEnabled: true,
     defaultIndex: -1,
-    defaultValue: 'Please select...',
+    defaultValue: null,
+    defaultButtonText: 'Please select...',
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
@@ -78,18 +81,18 @@ export default class ModalDropdown extends Component {
       accessible: !!props.accessible,
       loading: props.options === null || props.options === undefined,
       showDropdown: false,
-      buttonText: props.defaultValue,
+      currentValue: props.defaultValue,
       selectedIndex: props.defaultIndex
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
+    var currentValue = this._nextValue || this.state.currentValue
     var selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
       selectedIndex = nextProps.defaultIndex;
       if (selectedIndex < 0) {
-        buttonText = nextProps.defaultValue;
+        currentValue = nextProps.defaultValue;
       }
     }
     this._nextValue = null;
@@ -98,7 +101,7 @@ export default class ModalDropdown extends Component {
     this.setState({
       disabled: nextProps.disabled,
       loading: nextProps.options == null,
-      buttonText: buttonText,
+      currentValue: currentValue,
       selectedIndex: selectedIndex
     });
   }
@@ -142,19 +145,25 @@ export default class ModalDropdown extends Component {
     }
 
     if (idx >= 0) {
-      value = this.props.options[idx].toString();
+      value = this.props.options[idx];
     }
 
     this._nextValue = value;
     this._nextIndex = idx;
 
     this.setState({
-      buttonText: value,
+      currentValue: value,
       selectedIndex: idx
     });
   }
 
   _renderButton() {
+    var buttonText = this.props.defaultButtonText
+    if (this.state.currentValue) {
+      buttonText = this.props.valueToButtonText
+        ? this.props.valueToButtonText(this.state.currentValue)
+        : this.state.currentValue
+    }
     return (
       <TouchableOpacity ref={button => this._button = button}
                         disabled={this.props.disabled}
@@ -166,7 +175,7 @@ export default class ModalDropdown extends Component {
             <View style={styles.button}>
               <Text style={[styles.buttonText, this.props.textStyle]}
                     numberOfLines={1}>
-                {this.state.buttonText}
+                {buttonText}
               </Text>
             </View>
           )
@@ -361,7 +370,7 @@ export default class ModalDropdown extends Component {
       this._nextValue = rowData;
       this._nextIndex = rowID;
       this.setState({
-        buttonText: rowData.toString(),
+        currentValue: rowData,
         selectedIndex: rowID
       });
     }
