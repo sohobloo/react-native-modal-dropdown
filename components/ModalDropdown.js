@@ -97,12 +97,20 @@ export default class ModalDropdown extends Component {
     this._nextValue = null;
     this._nextIndex = null;
 
-    this.setState({
-      disabled: nextProps.disabled,
-      loading: nextProps.options == null,
-      buttonText: buttonText,
-      selectedIndex: selectedIndex
-    });
+    if (this.props.noButtonTextUpdate) {
+      this.setState({
+        disabled: nextProps.disabled,
+        loading: nextProps.options == null,
+        selectedIndex: selectedIndex
+      });
+    } else {
+      this.setState({
+        disabled: nextProps.disabled,
+        loading: nextProps.options == null,
+        buttonText: buttonText,
+        selectedIndex: selectedIndex
+      });
+    }
   }
 
   render() {
