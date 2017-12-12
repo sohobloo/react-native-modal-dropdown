@@ -36,6 +36,7 @@ export default class ModalDropdown extends Component {
 
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
+    noButtonTextUpdate: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
     keyboardShouldPersistTaps: PropTypes.string,
 
@@ -62,7 +63,8 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never'
+    keyboardShouldPersistTaps: 'never',
+    noButtonTextUpdate: false,
   };
 
   constructor(props) {
@@ -360,10 +362,17 @@ export default class ModalDropdown extends Component {
       highlightRow(sectionID, rowID);
       this._nextValue = rowData;
       this._nextIndex = rowID;
-      this.setState({
-        buttonText: rowData.toString(),
-        selectedIndex: rowID
-      });
+      if (this.props.noButtonTextUpdate) {
+        this.setState({
+          selectedIndex: rowID
+        });
+      } else {
+        this.setState({
+          buttonText: rowData.toString(),
+          selectedIndex: rowID
+        });
+      }
+
     }
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
