@@ -42,6 +42,7 @@ export default class ModalDropdown extends Component {
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    buttonStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -173,7 +174,7 @@ export default class ModalDropdown extends Component {
         {
           this.props.children ||
           (
-            <View style={styles.button}>
+            <View style={[styles.button, this.props.buttonStyle]}>
               <Text style={[styles.buttonText, this.props.textStyle]}
                     numberOfLines={1}>
                 {this.state.buttonText}
