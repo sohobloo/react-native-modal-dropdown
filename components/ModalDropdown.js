@@ -51,6 +51,7 @@ export default class ModalDropdown extends Component {
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
     onSelect: PropTypes.func,
+    renderButtonInner: PropTypes.func,    
   };
 
   constructor(props) {
@@ -150,10 +151,14 @@ export default class ModalDropdown extends Component {
           this.props.children ||
           (
             <View style={styles.button}>
+            {
+              this.props.renderButtonInner ?
+              this.props.renderButtonInner(styles,this.state.buttonText):
               <Text style={[styles.buttonText, this.props.textStyle]}
                     numberOfLines={1}>
                 {this.state.buttonText}
               </Text>
+            }
             </View>
           )
         }
