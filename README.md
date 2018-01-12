@@ -19,9 +19,8 @@ You can find them in the example.
 
 ## Update History
 
-### v0.5.0
-- React 16 compatibility.
-- Fix [#84](https://github.com/sohobloo/react-native-modal-dropdown/issues/84)  
+### v0.6.0
+- Introduce `renderButtonText` property to extract button text from object array data.
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
@@ -73,6 +72,7 @@ Prop                | Type     | Optional | Default   | Description
 `adjustFrame`       | func     | Yes      |           | This is a callback after the frame of the dropdown have been calculated and before showing. You will receive a style object as argument with some of the props like `width` `height` `top` `left` and `right`. Change them to appropriate values that accord with your requirement and **make the new style as the return value of this function**.
 `renderRow`         | func     | Yes      |           | Customize render option rows. **Will render a default row if `null`/`undefined`.**
 `renderSeparator`   | func     | Yes      |           | Customize render dropdown list separators. **Will render a default thin gray line if `null`/`undefined`.**
+`renderButtonText`  | func     | Yes      |           | Use this to extract and return text from option object. This text will show on button after option selected. **Invalid in wrapper mode.**
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**

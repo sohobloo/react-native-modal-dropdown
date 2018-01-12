@@ -48,6 +48,7 @@ export default class ModalDropdown extends Component {
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
+    renderButtonText: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -84,8 +85,8 @@ export default class ModalDropdown extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
-    var selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
+    let buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
+    let selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
       selectedIndex = nextProps.defaultIndex;
       if (selectedIndex < 0) {
@@ -136,7 +137,7 @@ export default class ModalDropdown extends Component {
   }
 
   select(idx) {
-    var value = this.props.defaultValue;
+    let value = this.props.defaultValue;
     if (idx == null || this.props.options == null || idx >= this.props.options.length) {
       idx = this.props.defaultIndex;
     }
@@ -184,8 +185,8 @@ export default class ModalDropdown extends Component {
 
   _renderModal() {
     if (this.state.showDropdown && this._buttonFrame) {
-      let frameStyle = this._calcPosition();
-      let animationType = this.props.animated ? 'fade' : 'none';
+      const frameStyle = this._calcPosition();
+      const animationType = this.props.animated ? 'fade' : 'none';
       return (
         <Modal animationType={animationType}
                visible={true}
@@ -207,19 +208,19 @@ export default class ModalDropdown extends Component {
   }
 
   _calcPosition() {
-    let dimensions = Dimensions.get('window');
-    let windowWidth = dimensions.width;
-    let windowHeight = dimensions.height;
+    const dimensions = Dimensions.get('window');
+    const windowWidth = dimensions.width;
+    const windowHeight = dimensions.height;
 
-    let dropdownHeight = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).height) ||
+    const dropdownHeight = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).height) ||
       StyleSheet.flatten(styles.dropdown).height;
 
-    let bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
-    let rightSpace = windowWidth - this._buttonFrame.x;
-    let showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
-    let showInLeft = rightSpace >= this._buttonFrame.x;
+    const bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
+    const rightSpace = windowWidth - this._buttonFrame.x;
+    const showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
+    const showInLeft = rightSpace >= this._buttonFrame.x;
 
-    var style = {
+    let style = {
       height: dropdownHeight,
       top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
     };
@@ -227,7 +228,7 @@ export default class ModalDropdown extends Component {
     if (showInLeft) {
       style.left = this._buttonFrame.x;
     } else {
-      let dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
+      const dropdownWidth = (this.props.dropdownStyle && StyleSheet.flatten(this.props.dropdownStyle).width) ||
         (this.props.style && StyleSheet.flatten(this.props.style).width) || -1;
       if (dropdownWidth !== -1) {
         style.width = dropdownWidth;
@@ -277,16 +278,16 @@ export default class ModalDropdown extends Component {
   }
 
   get _dataSource() {
-    let ds = new ListView.DataSource({
+    const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     return ds.cloneWithRows(this.props.options);
   }
 
   _renderRow(rowData, sectionID, rowID, highlightRow) {
-    let key = `row_${rowID}`;
-    let highlighted = rowID == this.state.selectedIndex;
-    let row = !this.props.renderRow ?
+    const key = `row_${rowID}`;
+    const highlighted = rowID == this.state.selectedIndex;
+    const row = !this.props.renderRow ?
       (<Text style={[
         styles.rowText,
         this.props.dropdownTextStyle,
@@ -297,13 +298,13 @@ export default class ModalDropdown extends Component {
         {rowData}
       </Text>) :
       this.props.renderRow(rowData, rowID, highlighted);
-    let preservedProps = {
+    const preservedProps = {
       key: key,
       accessible: this.props.accessible,
       onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
-      var props = {...row.props};
+      const props = {...row.props};
       props.key = preservedProps.key;
       props.onPress = preservedProps.onPress;
       switch (row.type.displayName) {
@@ -315,7 +316,6 @@ export default class ModalDropdown extends Component {
             </TouchableHighlight>
           );
         }
-          break;
         case 'TouchableOpacity':
         {
           return (
@@ -324,7 +324,6 @@ export default class ModalDropdown extends Component {
             </TouchableOpacity>
           );
         }
-          break;
         case 'TouchableWithoutFeedback':
         {
           return (
@@ -333,7 +332,6 @@ export default class ModalDropdown extends Component {
             </TouchableWithoutFeedback>
           );
         }
-          break;
         case 'TouchableNativeFeedback':
         {
           return (
@@ -342,7 +340,6 @@ export default class ModalDropdown extends Component {
             </TouchableNativeFeedback>
           );
         }
-          break;
         default:
           break;
       }
@@ -355,18 +352,17 @@ export default class ModalDropdown extends Component {
   }
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    if (!this.props.onSelect ||
-      this.props.onSelect(rowID, rowData) !== false) {
+    const { onSelect, renderButtonText, onDropdownWillHide } = this.props;
+    if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       this._nextValue = rowData;
       this._nextIndex = rowID;
       this.setState({
-        buttonText: rowData.toString(),
+        buttonText: renderButtonText && renderButtonText(rowData) || rowData.toString(),
         selectedIndex: rowID
       });
     }
-    if (!this.props.onDropdownWillHide ||
-      this.props.onDropdownWillHide() !== false) {
+    if (!onDropdownWillHide || onDropdownWillHide() !== false) {
       this.setState({
         showDropdown: false
       });
@@ -374,7 +370,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    let key = `spr_${rowID}`;
+    const key = `spr_${rowID}`;
     return (<View style={styles.separator}
                   key={key}
     />);

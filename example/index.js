@@ -65,6 +65,7 @@ class Demo extends Component {
                            textStyle={styles.dropdown_2_text}
                            dropdownStyle={styles.dropdown_2_dropdown}
                            options={DEMO_OPTIONS_2}
+                           renderButtonText={(rowData) => this._dropdown_2_renderButtonText(rowData)}
                            renderRow={this._dropdown_2_renderRow.bind(this)}
                            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             />
@@ -128,6 +129,11 @@ class Demo extends Component {
         </View>
       </View>
     );
+  }
+
+  _dropdown_2_renderButtonText(rowData) {
+    const { name, age } = rowData;
+    return `${name} - ${age}`;
   }
 
   _dropdown_2_renderRow(rowData, rowID, highlighted) {
