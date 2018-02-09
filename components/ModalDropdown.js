@@ -85,7 +85,10 @@ export default class ModalDropdown extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
+    let buttonText = this.state.buttonText;
+    if (this._nextValue !== null) {
+      buttonText = nextProps.renderButtonText && nextProps.renderButtonText(this._nextValue) || this._nextValue.toString();
+    }
     let selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
       selectedIndex = nextProps.defaultIndex;
@@ -359,12 +362,8 @@ export default class ModalDropdown extends Component {
       this._nextIndex = rowID;
       this.setState({
         buttonText: renderButtonText && renderButtonText(rowData) || rowData.toString(),
-        selectedIndex: rowID
-      });
-    }
-    if (!onDropdownWillHide || onDropdownWillHide() !== false) {
-      this.setState({
-        showDropdown: false
+        selectedIndex: rowID,
+        showDropdown: !(!onDropdownWillHide || onDropdownWillHide() !== false)
       });
     }
   }
