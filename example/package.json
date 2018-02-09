@@ -6,8 +6,8 @@
   "license": "MIT",
   "author": "sohobloo <sohobloo@live.cn> (https://github.com/sohobloo)",
   "dependencies": {
-    "react": "^15.4.1",
-    "react-native": "^0.42.3",
+    "react": "^16.2.0",
+    "react-native": "^0.53.0",
     "react-native-modal-dropdown": "latest"
   },
   "scripts": {
