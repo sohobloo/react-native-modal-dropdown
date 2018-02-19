@@ -74,7 +74,7 @@ Prop                | Type     | Optional | Default   | Description
 `dropdownTextStyle` | object   | Yes      |           | Style of the dropdown option text.
 `dropdownTextHighlightStyle`   | object | Yes      |  | Style of the dropdown selected option text.
 `adjustFrame`       | func     | Yes      |           | This is a callback after the frame of the dropdown have been calculated and before showing. You will receive a style object as argument with some of the props like `width` `height` `top` `left` and `right`. Change them to appropriate values that accord with your requirement and **make the new style as the return value of this function**.
-`renderRow`         | func     | Yes      |           | Customize render option rows. **Will render a default row if `null`/`undefined`.**
+`renderRow`         | func     | Yes      |           | Customize render option rows: `function(option,index,isSelected)` **Will render a default row if `null`/`undefined`.**
 `renderSeparator`   | func     | Yes      |           | Customize render dropdown list separators. **Will render a default thin gray line if `null`/`undefined`.**
 `renderButtonText`  | func     | Yes      |           | Use this to extract and return text from option object. This text will show on button after option selected. **Invalid in wrapper mode.**
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
