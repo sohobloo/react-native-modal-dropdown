@@ -92,8 +92,6 @@ export default class ModalDropdown extends Component {
     let {buttonText, selectedIndex} = this.state;
     const {defaultIndex, defaultValue, options, renderButtonText} = nextProps;
 
-    console.log('##START', buttonText, defaultValue)
-
     buttonText = this._nextValue == null ? buttonText : this._nextValue;
 
     if (renderButtonText) {
@@ -111,8 +109,6 @@ export default class ModalDropdown extends Component {
 
     this._nextValue = null;
     this._nextIndex = null;
-
-    console.log('##END', buttonText, selectedIndex)
 
     this.setState({
       loading: !options,
