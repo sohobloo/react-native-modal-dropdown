@@ -47,6 +47,7 @@ export default class ModalDropdown extends Component {
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    dropdownShowInTopStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
 
@@ -78,6 +79,7 @@ export default class ModalDropdown extends Component {
     this._buttonFrame = null;
     this._nextValue = null;
     this._nextIndex = null;
+    this._showInBottom = true;
 
     this.state = {
       accessible: !!props.accessible,
@@ -173,7 +175,7 @@ export default class ModalDropdown extends Component {
                         onPress={this._onButtonPress}
       >
         {
-          children ||
+          children(this._showInBottom) ||
           (
             <View style={styles.button}>
               <Text style={[styles.buttonText, textStyle]}
@@ -197,11 +199,12 @@ export default class ModalDropdown extends Component {
   };
 
   _renderModal() {
-    const {animated, accessible, dropdownStyle} = this.props;
+    const {animated, accessible, dropdownStyle, dropdownShowInTopStyle} = this.props;
     const {showDropdown, loading} = this.state;
     if (showDropdown && this._buttonFrame) {
       const frameStyle = this._calcPosition();
       const animationType = animated ? 'fade' : 'none';
+      const customDropDownStyle = [dropdownStyle, !this._showInBottom && dropdownShowInTopStyle];
       return (
         <Modal animationType={animationType}
                visible={true}
@@ -214,7 +217,7 @@ export default class ModalDropdown extends Component {
                                     onPress={this._onModalPress}
           >
             <View style={styles.modal}>
-              <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
+              <View style={[styles.dropdown, customDropDownStyle, frameStyle]}>
                 {loading ? this._renderLoading() : this._renderDropdown()}
               </View>
             </View>
@@ -236,13 +239,15 @@ export default class ModalDropdown extends Component {
 
     const bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
     const rightSpace = windowWidth - this._buttonFrame.x;
-    const showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
+    this._showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
     const showInLeft = rightSpace >= this._buttonFrame.x;
 
     const positionStyle = {
       height: dropdownHeight,
-      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
+      top: this._showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
     };
+
+    positionStyle.top = this._showInBottom ? positionStyle.top - 1 : positionStyle.top + 1;
 
     if (showInLeft) {
       positionStyle.left = this._buttonFrame.x;
@@ -254,7 +259,6 @@ export default class ModalDropdown extends Component {
       }
       positionStyle.right = rightSpace - this._buttonFrame.w;
     }
-
     return adjustFrame ? adjustFrame(positionStyle) : positionStyle;
   }
 
