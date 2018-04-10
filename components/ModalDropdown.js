@@ -288,6 +288,7 @@ export default class ModalDropdown extends Component {
     const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
     return (
       <ListView scrollEnabled={scrollEnabled}
+                enableEmptySections
                 style={styles.list}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow}
