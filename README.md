@@ -19,15 +19,21 @@ You can find them in the example.
 
 ## Update History
 
-### v0.5.0
-- React 16 compatibility.
-- Fix [#84](https://github.com/sohobloo/react-native-modal-dropdown/issues/84)  
+### v0.6.2
+- Fix [#139](https://github.com/sohobloo/react-native-modal-dropdown/issues/139) `renderButtonText` renders \[object Object] if there is a call to `setState` in `onSelect` or `renderButtonText` functions
+
+### v0.6.1
+- Fix [#127](https://github.com/sohobloo/react-native-modal-dropdown/issues/127) `renderButtonText` does not work on `select(idx)`  (Thanks to [@swb2016](https://github.com/swb2016))
+- Code optimization.
+
+### v0.6.0
+- Introduce `renderButtonText` property to extract button text from object array data.
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
 ## Installation
 ```sh
-npm i react-native-modal-dropdown -S
+npm i react-native-modal-dropdown -save
 ```
 
 ## Usage
@@ -71,8 +77,9 @@ Prop                | Type     | Optional | Default   | Description
 `dropdownTextStyle` | object   | Yes      |           | Style of the dropdown option text.
 `dropdownTextHighlightStyle`   | object | Yes      |  | Style of the dropdown selected option text.
 `adjustFrame`       | func     | Yes      |           | This is a callback after the frame of the dropdown have been calculated and before showing. You will receive a style object as argument with some of the props like `width` `height` `top` `left` and `right`. Change them to appropriate values that accord with your requirement and **make the new style as the return value of this function**.
-`renderRow`         | func     | Yes      |           | Customize render option rows. **Will render a default row if `null`/`undefined`.**
+`renderRow`         | func     | Yes      |           | Customize render option rows: `function(option,index,isSelected)` **Will render a default row if `null`/`undefined`.**
 `renderSeparator`   | func     | Yes      |           | Customize render dropdown list separators. **Will render a default thin gray line if `null`/`undefined`.**
+`renderButtonText`  | func     | Yes      |           | Use this to extract and return text from option object. This text will show on button after option selected. **Invalid in wrapper mode.**
 `onDropdownWillShow`| func     | Yes      |           | Trigger when dropdown will show by touching the button. **Return `false` can cancel the event.**
 `onDropdownWillHide`| func     | Yes      |           | Trigger when dropdown will hide by touching the button. **Return `false` can cancel the event.**
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**

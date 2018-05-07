@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -44,7 +44,7 @@ class Demo extends Component {
   }
 
   render() {
-    let dropdown_6_icon = this.state.dropdown_6_icon_heart ? require('./images/heart.png') : require('./images/flower.png');
+    const dropdown_6_icon = this.state.dropdown_6_icon_heart ? require('./images/heart.png') : require('./images/flower.png');
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -61,13 +61,22 @@ class Demo extends Component {
             </ModalDropdown>
           </View>
           <View style={styles.cell}>
-            <ModalDropdown style={styles.dropdown_2}
+            <ModalDropdown ref="dropdown_2"
+                           style={styles.dropdown_2}
                            textStyle={styles.dropdown_2_text}
                            dropdownStyle={styles.dropdown_2_dropdown}
                            options={DEMO_OPTIONS_2}
+                           renderButtonText={(rowData) => this._dropdown_2_renderButtonText(rowData)}
                            renderRow={this._dropdown_2_renderRow.bind(this)}
                            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             />
+            <TouchableOpacity onPress={() => {
+              this.refs.dropdown_2.select(0);
+            }}>
+              <Text style={styles.textButton}>
+                select Rex
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.row}>
@@ -128,6 +137,11 @@ class Demo extends Component {
         </View>
       </View>
     );
+  }
+
+  _dropdown_2_renderButtonText(rowData) {
+    const {name, age} = rowData;
+    return `${name} - ${age}`;
   }
 
   _dropdown_2_renderRow(rowData, rowID, highlighted) {
@@ -250,7 +264,7 @@ const styles = StyleSheet.create({
   dropdown_2: {
     alignSelf: 'flex-end',
     width: 150,
-    top: 32,
+    marginTop: 32,
     right: 8,
     borderWidth: 0,
     borderRadius: 3,
