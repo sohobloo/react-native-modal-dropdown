@@ -53,6 +53,7 @@ export default class ModalDropdown extends Component {
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
+    renderHeader: PropTypes.func,
     renderButtonText: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
@@ -281,12 +282,13 @@ export default class ModalDropdown extends Component {
   }
 
   _renderDropdown() {
-    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
+    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps, renderHeader} = this.props;
     return (
       <ListView scrollEnabled={scrollEnabled}
                 style={styles.list}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow}
+                renderHeader={renderHeader}
                 renderSeparator={renderSeparator || this._renderSeparator}
                 automaticallyAdjustContentInsets={false}
                 showsVerticalScrollIndicator={showsVerticalScrollIndicator}
