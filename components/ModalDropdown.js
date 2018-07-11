@@ -18,10 +18,10 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   TouchableHighlight,
-  Modal,
   ActivityIndicator,
 } from 'react-native';
 
+import Modal from './modal';
 import PropTypes from 'prop-types';
 
 const TOUCHABLE_ELEMENTS = [
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   list: {
-    //flexGrow: 1,
+    width: '100%'
   },
   rowText: {
     paddingHorizontal: 6,
