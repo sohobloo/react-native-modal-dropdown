@@ -1,5 +1,6 @@
 /**
  * Created by sohobloo on 16/9/13.
+ * Forked by karniej on 17/07/2018
  */
 
 'use strict';
@@ -49,6 +50,8 @@ export default class ModalDropdown extends Component {
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    touchableHiglightunderlayColor: PropTypes.string,
+    listViewBorderRadius: PropTypes.number,
 
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
@@ -68,7 +71,8 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never'
+    keyboardShouldPersistTaps: 'never',
+    touchableHiglightunderlayColor: 'black'
   };
 
   constructor(props) {
@@ -281,10 +285,10 @@ export default class ModalDropdown extends Component {
   }
 
   _renderDropdown() {
-    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
+    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps, listViewBorderRadius} = this.props;
     return (
       <ListView scrollEnabled={scrollEnabled}
-                style={styles.list}
+                style={[styles.list, { borderRadius: listViewBorderRadius }]}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow}
                 renderSeparator={renderSeparator || this._renderSeparator}
@@ -304,7 +308,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderRow = (rowData, sectionID, rowID, highlightRow) => {
-    const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible} = this.props;
+    const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible, touchableHiglightunderlayColor} = this.props;
     const {selectedIndex} = this.state;
     const key = `row_${rowID}`;
     const highlighted = rowID == selectedIndex;
@@ -332,7 +336,7 @@ export default class ModalDropdown extends Component {
       switch (row.type.displayName) {
         case 'TouchableHighlight': {
           return (
-            <TouchableHighlight {...props}>
+            <TouchableHighlight underlayColor={touchableHiglightunderlayColor} {...props}>
               {children}
             </TouchableHighlight>
           );
@@ -363,7 +367,7 @@ export default class ModalDropdown extends Component {
       }
     }
     return (
-      <TouchableHighlight {...preservedProps}>
+      <TouchableHighlight underlayColor={touchableHiglightunderlayColor} {...preservedProps}>
         {row}
       </TouchableHighlight>
     );
