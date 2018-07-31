@@ -51,8 +51,9 @@ export default class ModalDropdown extends Component {
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     touchableHiglightunderlayColor: PropTypes.string,
-    listViewBorderRadius: PropTypes.number,
-
+    dropdownShadow: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    activeOpacity: PropTypes.number,
+    multiSelectDropdown: PropTypes.bool,
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
@@ -72,7 +73,12 @@ export default class ModalDropdown extends Component {
     animated: true,
     showsVerticalScrollIndicator: true,
     keyboardShouldPersistTaps: 'never',
-    touchableHiglightunderlayColor: 'black'
+    dropdownShadow: {
+      shadowOpacity: 0.25,
+      shadowColor: 'black',
+      shadowRadius: 15,
+      shadowOffset: { width: 0, height: 20 }
+    }
   };
 
   constructor(props) {
@@ -167,7 +173,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderButton() {
-    const {disabled, accessible, children, textStyle} = this.props;
+    const {disabled, accessible, children, textStyle, activeOpacity} = this.props;
     const {buttonText} = this.state;
 
     return (
@@ -175,6 +181,7 @@ export default class ModalDropdown extends Component {
                         disabled={disabled}
                         accessible={accessible}
                         onPress={this._onButtonPress}
+                        activeOpacity={activeOpacity}
       >
         {
           children ||
@@ -201,7 +208,7 @@ export default class ModalDropdown extends Component {
   };
 
   _renderModal() {
-    const {animated, accessible, dropdownStyle} = this.props;
+    const {animated, accessible, dropdownStyle, dropdownShadow} = this.props;
     const {showDropdown, loading} = this.state;
     if (showDropdown && this._buttonFrame) {
       const frameStyle = this._calcPosition();
@@ -217,7 +224,7 @@ export default class ModalDropdown extends Component {
                                     disabled={!showDropdown}
                                     onPress={this._onModalPress}
           >
-            <View style={styles.modal}>
+            <View style={[styles.modal, dropdownShadow]}>
               <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
                 {loading ? this._renderLoading() : this._renderDropdown()}
               </View>
@@ -285,10 +292,9 @@ export default class ModalDropdown extends Component {
   }
 
   _renderDropdown() {
-    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps, listViewBorderRadius} = this.props;
+    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
     return (
       <ListView scrollEnabled={scrollEnabled}
-                style={[styles.list, { borderRadius: listViewBorderRadius }]}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow}
                 renderSeparator={renderSeparator || this._renderSeparator}
@@ -374,7 +380,7 @@ export default class ModalDropdown extends Component {
   };
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
+    const {onSelect, renderButtonText, onDropdownWillHide, multiSelectDropdown} = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
@@ -386,9 +392,11 @@ export default class ModalDropdown extends Component {
       });
     }
     if (!onDropdownWillHide || onDropdownWillHide() !== false) {
+      multiSelectDropdown ? null : (
       this.setState({
         showDropdown: false
-      });
+      })
+      )
     }
   }
 
@@ -417,15 +425,11 @@ const styles = StyleSheet.create({
     height: (33 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 2,
     backgroundColor: 'white',
     justifyContent: 'center'
   },
   loading: {
     alignSelf: 'center'
-  },
-  list: {
-    //flexGrow: 1,
   },
   rowText: {
     paddingHorizontal: 6,
