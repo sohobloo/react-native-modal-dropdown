@@ -8,6 +8,8 @@ import React, {
   Component,
 } from 'react';
 
+import FocusTrap from './focus-trap';
+
 import {
   StyleSheet,
   Dimensions,
@@ -40,6 +42,8 @@ export default class ModalDropdown extends Component {
     options: PropTypes.array,
 
     accessible: PropTypes.bool,
+    dropdownAccessibilityLabel: PropTypes.string,
+    dropdownAccessibilityTraits: PropTypes.string,
     animated: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
     keyboardShouldPersistTaps: PropTypes.string,
@@ -68,7 +72,8 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never'
+    keyboardShouldPersistTaps: 'never',
+    dropdownAccessibilityTraits: 'menuitem',
   };
 
   constructor(props) {
@@ -197,7 +202,7 @@ export default class ModalDropdown extends Component {
   };
 
   _renderModal() {
-    const {animated, accessible, dropdownStyle} = this.props;
+    const {animated, accessible, dropdownStyle, dropdownAccessibilityLabel, dropdownAccessibilityTraits} = this.props;
     const {showDropdown, loading} = this.state;
     if (showDropdown && this._buttonFrame) {
       const frameStyle = this._calcPosition();
@@ -214,9 +219,15 @@ export default class ModalDropdown extends Component {
                                     onPress={this._onModalPress}
           >
             <View style={styles.modal}>
-              <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
-                {loading ? this._renderLoading() : this._renderDropdown()}
-              </View>
+              <FocusTrap 
+                focusTrapOptions={{ onDeactivate: this._onRequestClose, clickOutsideDeactivates: true }}
+                accessibilityTraits={dropdownAccessibilityTraits} 
+                accessibilityLabel={dropdownAccessibilityLabel}
+              >
+                <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
+                  {loading ? this._renderLoading() : this._renderDropdown()}
+                </View>
+              </FocusTrap>
             </View>
           </TouchableWithoutFeedback>
         </Modal>
