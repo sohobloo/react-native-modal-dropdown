@@ -24,12 +24,17 @@
   "license": "MIT",
   "author": "sohobloo <sohobloo@live.cn> (https://github.com/sohobloo)",
   "main": "index.js",
+  "react-native": {
+    "./components/focus-trap.js": "./components/focus-trap.native.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sohobloo/react-native-modal-dropdown.git"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "react-native-web-modal": "^1.0.1",
+    "focus-trap-react": "^4.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
