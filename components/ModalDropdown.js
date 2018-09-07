@@ -94,10 +94,10 @@ export default class ModalDropdown extends Component {
     buttonText = this._nextValue == null ? buttonText : this._nextValue;
     selectedIndex = this._nextIndex == null ? selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
-      selectedIndex = defaultIndex;
-      if (selectedIndex < 0) {
-        buttonText = defaultValue;
-      }
+        if (defaultValue) {
+          buttonText = defaultValue;
+        }
+        selectedIndex = defaultIndex;
     }
     this._nextValue = null;
     this._nextIndex = null;
