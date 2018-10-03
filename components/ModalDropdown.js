@@ -45,6 +45,7 @@ export default class ModalDropdown extends Component {
     keyboardShouldPersistTaps: PropTypes.string,
 
     style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
+    backgroundColorHighlight: PropTypes.string,
     textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
@@ -54,6 +55,7 @@ export default class ModalDropdown extends Component {
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
     renderButtonText: PropTypes.func,
+    renderButtonIcon: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -68,7 +70,8 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never'
+    keyboardShouldPersistTaps: 'never',
+    backgroundColorHighlight: 'transparent',
   };
 
   constructor(props) {
@@ -163,8 +166,10 @@ export default class ModalDropdown extends Component {
   }
 
   _renderButton() {
-    const {disabled, accessible, children, textStyle} = this.props;
-    const {buttonText} = this.state;
+    const {disabled, accessible, children, textStyle, renderButtonIcon, backgroundColorHighlight} = this.props;
+    const {buttonText, showDropdown} = this.state;
+
+    const backgroundColor = showDropdown ? backgroundColorHighlight : 'transparent';
 
     return (
       <TouchableOpacity ref={button => this._button = button}
@@ -175,12 +180,13 @@ export default class ModalDropdown extends Component {
         {
           children ||
           (
-            <View style={styles.button}>
+            <View style={[styles.button, {backgroundColor: backgroundColor}]}>
               <Text style={[styles.buttonText, textStyle]}
                     numberOfLines={1}
               >
                 {buttonText}
               </Text>
+              {renderButtonIcon && renderButtonIcon()}
             </View>
           )
         }
@@ -239,13 +245,16 @@ export default class ModalDropdown extends Component {
     const showInBottom = bottomSpace >= dropdownHeight || bottomSpace >= this._buttonFrame.y;
     const showInLeft = rightSpace >= this._buttonFrame.x;
 
+    const leftOffset = (style.borderWidth || 0) + (style.paddingLeft || style.paddingHorizontal || style.padding || 0);
+    const bottomOffset = (style.borderWidth || 0) + (style.paddingBottom || style.paddingVertica || style.padding || 0);
+
     const positionStyle = {
       height: dropdownHeight,
-      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
+      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h + bottomOffset : Math.max(0, this._buttonFrame.y - dropdownHeight),
     };
 
     if (showInLeft) {
-      positionStyle.left = this._buttonFrame.x;
+      positionStyle.left = this._buttonFrame.x - leftOffset;
     } else {
       const dropdownWidth = (dropdownStyle && StyleSheet.flatten(dropdownStyle).width) ||
         (style && StyleSheet.flatten(style).width) || -1;
@@ -400,7 +409,8 @@ export default class ModalDropdown extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: 'center'
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   buttonText: {
     fontSize: 12
@@ -421,7 +431,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   list: {
-    //flexGrow: 1,
+    shadowRadius: 3,
+    shadowColor: '#5d5d5d',
+    elevation: 5,
   },
   rowText: {
     paddingHorizontal: 6,
