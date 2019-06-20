@@ -1,4 +1,13 @@
 /**
+|--------------------------------------------------
+| https://github.com/sohobloo/react-native-modal-dropdown
+| Edited by Winsey Li on 15/6/2019.
+| Customize to support scenrio that keeps showing dropdown after OnSelect action
+| 
+|--------------------------------------------------
+*/
+
+/**
  * Created by sohobloo on 16/9/13.
  */
 
@@ -38,6 +47,7 @@ export default class ModalDropdown extends Component {
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
     options: PropTypes.array,
+    keepShowAfterOnSelect: PropTypes.bool, // Added by Winsey Li
 
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
@@ -66,6 +76,7 @@ export default class ModalDropdown extends Component {
     defaultIndex: -1,
     defaultValue: 'Please select...',
     options: null,
+    keepShowAfterOnSelect: false, // Added by Winsey Li
     animated: true,
     showsVerticalScrollIndicator: true,
     keyboardShouldPersistTaps: 'never'
@@ -225,14 +236,15 @@ export default class ModalDropdown extends Component {
   }
 
   _calcPosition() {
-    const {dropdownStyle, style, adjustFrame} = this.props;
+    const {options, dropdownStyle, style, adjustFrame} = this.props;
 
     const dimensions = Dimensions.get('window');
     const windowWidth = dimensions.width;
     const windowHeight = dimensions.height;
 
-    const dropdownHeight = (dropdownStyle && StyleSheet.flatten(dropdownStyle).height) ||
-      StyleSheet.flatten(styles.dropdown).height;
+    // Added by Winsey Li
+    // set height depends on number of rows
+    const dropdownHeight = Math.min(200, options.length * 40);
 
     const bottomSpace = windowHeight - this._buttonFrame.y - this._buttonFrame.h;
     const rightSpace = windowWidth - this._buttonFrame.x;
@@ -241,7 +253,7 @@ export default class ModalDropdown extends Component {
 
     const positionStyle = {
       height: dropdownHeight,
-      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h : Math.max(0, this._buttonFrame.y - dropdownHeight),
+      top: showInBottom ? this._buttonFrame.y + this._buttonFrame.h + 6 : Math.max(0, this._buttonFrame.y - dropdownHeight - 6),
     };
 
     if (showInLeft) {
@@ -254,6 +266,9 @@ export default class ModalDropdown extends Component {
       }
       positionStyle.right = rightSpace - this._buttonFrame.w;
     }
+
+    // Added by Winsey Li
+    positionStyle.width = this._buttonFrame.w;
 
     return adjustFrame ? adjustFrame(positionStyle) : positionStyle;
   }
@@ -370,7 +385,7 @@ export default class ModalDropdown extends Component {
   };
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
+    const {onSelect, renderButtonText, onDropdownWillHide, keepShowAfterOnSelect} = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
@@ -380,6 +395,10 @@ export default class ModalDropdown extends Component {
         buttonText: value,
         selectedIndex: rowID
       });
+    }
+    // Added by Winsey Li
+    if (keepShowAfterOnSelect) {
+      return;
     }
     if (!onDropdownWillHide || onDropdownWillHide() !== false) {
       this.setState({
