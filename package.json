@@ -29,7 +29,8 @@
     "url": "https://github.com/sohobloo/react-native-modal-dropdown.git"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "deprecated-react-native-listview": "0.0.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
