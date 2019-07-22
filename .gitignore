@@ -5,6 +5,7 @@
 # IDE
 .idea
 
+node_modules
 npm-debug.log
-
-example/ModalDropdown.js
+package-lock.json
+example/package-lock.json

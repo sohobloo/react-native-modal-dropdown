@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -16,8 +16,8 @@ import {
   ScrollView,
 } from 'react-native';
 
-import ModalDropdown from 'react-native-modal-dropdown';
-//import ModalDropdown from './ModalDropdown';
+// import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdown from './ModalDropdown';
 
 const DEMO_OPTIONS_1 = ['option 1', 'option 2', 'option 3', 'option 4', 'option 5', 'option 6', 'option 7', 'option 8', 'option 9'];
 const DEMO_OPTIONS_2 = [
@@ -44,7 +44,7 @@ class Demo extends Component {
   }
 
   render() {
-    let dropdown_6_icon = this.state.dropdown_6_icon_heart ? require('./images/heart.png') : require('./images/flower.png');
+    const dropdown_6_icon = this.state.dropdown_6_icon_heart ? require('./images/heart.png') : require('./images/flower.png');
     return (
       <View style={styles.container}>
         <View style={styles.row}>
@@ -61,13 +61,22 @@ class Demo extends Component {
             </ModalDropdown>
           </View>
           <View style={styles.cell}>
-            <ModalDropdown style={styles.dropdown_2}
+            <ModalDropdown ref="dropdown_2"
+                           style={styles.dropdown_2}
                            textStyle={styles.dropdown_2_text}
                            dropdownStyle={styles.dropdown_2_dropdown}
                            options={DEMO_OPTIONS_2}
+                           renderButtonText={(rowData) => this._dropdown_2_renderButtonText(rowData)}
                            renderRow={this._dropdown_2_renderRow.bind(this)}
                            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this._dropdown_2_renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
             />
+            <TouchableOpacity onPress={() => {
+              this.refs.dropdown_2.select(0);
+            }}>
+              <Text style={styles.textButton}>
+                select Rex
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.row}>
@@ -83,6 +92,8 @@ class Demo extends Component {
                            style={styles.dropdown_3}
                            options={DEMO_OPTIONS_1}
                            adjustFrame={style => this._dropdown_3_adjustFrame(style)}
+                           dropdownTextStyle={styles.dropdown_3_dropdownTextStyle}
+                           dropdownTextHighlightStyle={styles.dropdown_3_dropdownTextHighlightStyle}
             />
           </ScrollView>
         </View>
@@ -126,6 +137,11 @@ class Demo extends Component {
         </View>
       </View>
     );
+  }
+
+  _dropdown_2_renderButtonText(rowData) {
+    const {name, age} = rowData;
+    return `${name} - ${age}`;
   }
 
   _dropdown_2_renderRow(rowData, rowID, highlighted) {
@@ -248,7 +264,7 @@ const styles = StyleSheet.create({
   dropdown_2: {
     alignSelf: 'flex-end',
     width: 150,
-    top: 32,
+    marginTop: 32,
     right: 8,
     borderWidth: 0,
     borderRadius: 3,
@@ -294,6 +310,14 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderWidth: 1,
     borderRadius: 1,
+  },
+  dropdown_3_dropdownTextStyle: {
+    backgroundColor: '#000',
+    color: '#fff'
+  },
+  dropdown_3_dropdownTextHighlightStyle: {
+    backgroundColor: '#fff',
+    color: '#000'
   },
   dropdown_4: {
     margin: 8,
