@@ -255,7 +255,7 @@ export default class ModalDropdown extends Component {
       positionStyle.right = rightSpace - this._buttonFrame.w;
     }
 
-    return adjustFrame ? adjustFrame(positionStyle) : positionStyle;
+    return adjustFrame ? adjustFrame(positionStyle, showInBottom) : positionStyle;
   }
 
   _onRequestClose = () => {
