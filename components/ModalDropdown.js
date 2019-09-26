@@ -245,10 +245,19 @@ export default class ModalDropdown extends Component {
     };
 
     if (showInLeft) {
+      const dropdownStyleWidth = dropdownStyle && StyleSheet.flatten(dropdownStyle).width;    
       positionStyle.left = this._buttonFrame.x;
+      positionStyle.width = dropdownStyleWidth || this._buttonFrame.w;
     } else {
-      const dropdownWidth = (dropdownStyle && StyleSheet.flatten(dropdownStyle).width) ||
-        (style && StyleSheet.flatten(style).width) || -1;
+      const dropdownStyleWidth = dropdownStyle && StyleSheet.flatten(dropdownStyle).width;
+      let styleWidth = style && StyleSheet.flatten(style).width;
+
+      if(!dropdownStyleWidth && typeof styleWidth === 'string' && styleWidth.includes('%')){
+        styleWidth = this._buttonFrame.w; 
+      }
+
+      const dropdownWidth = dropdownStyleWidth || styleWidth || -1;
+      
       if (dropdownWidth !== -1) {
         positionStyle.width = dropdownWidth;
       }
