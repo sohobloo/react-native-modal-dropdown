@@ -4,9 +4,7 @@
 
 'use strict';
 
-import React, {
-  Component,
-} from 'react';
+import React from 'react';
 
 import {
   StyleSheet,
@@ -19,9 +17,9 @@ import {
   TouchableHighlight,
   Modal,
   ActivityIndicator,
+  FlatList
 } from 'react-native';
 
-import ListView from "deprecated-react-native-listview";
 import PropTypes from 'prop-types';
 
 const TOUCHABLE_ELEMENTS = [
@@ -31,7 +29,7 @@ const TOUCHABLE_ELEMENTS = [
   'TouchableNativeFeedback'
 ];
 
-export default class ModalDropdown extends Component {
+export default class ModalDropdown extends React.Component {
   static propTypes = {
     disabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
@@ -52,6 +50,7 @@ export default class ModalDropdown extends Component {
 
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
+    keyExtractor: PropTypes.string,
     renderSeparator: PropTypes.func,
     renderButtonText: PropTypes.func,
 
@@ -281,13 +280,17 @@ export default class ModalDropdown extends Component {
   }
 
   _renderDropdown() {
-    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
+    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps, keyExtractor } = this.props;
     return (
-      <ListView scrollEnabled={scrollEnabled}
+      <FlatList scrollEnabled={scrollEnabled}
                 style={styles.list}
-                dataSource={this._dataSource}
-                renderRow={this._renderRow}
-                renderSeparator={renderSeparator || this._renderSeparator}
+                keyExtractor={(item, index) =>
+                  keyExtractor && item.hasOwnProperty(keyExtractor)
+                    ? item[keyExtractor] : `${index}`
+                }
+                data={this.props.options}
+                renderItem={this._renderItem}
+                ItemSeparatorComponent={renderSeparator || this._renderSeparator}
                 automaticallyAdjustContentInsets={false}
                 showsVerticalScrollIndicator={showsVerticalScrollIndicator}
                 keyboardShouldPersistTaps={keyboardShouldPersistTaps}
@@ -295,40 +298,34 @@ export default class ModalDropdown extends Component {
     );
   }
 
-  get _dataSource() {
-    const {options} = this.props;
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    return ds.cloneWithRows(options);
-  }
+  _renderItem = ({item, index, separators}) => {
+    const { renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible, keyExtractor } = this.props;
+    const { selectedIndex } = this.state;
 
-  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
-    const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible} = this.props;
-    const {selectedIndex} = this.state;
-    const key = `row_${rowID}`;
-    const highlighted = rowID == selectedIndex;
-    const row = !renderRow ?
-      (<Text style={[
-        styles.rowText,
-        dropdownTextStyle,
-        highlighted && styles.highlightedRowText,
-        highlighted && dropdownTextHighlightStyle
-      ]}
-      >
-        {rowData}
-      </Text>) :
-      renderRow(rowData, rowID, highlighted);
+    const highlighted = index == selectedIndex;
+
+    let row = !renderRow ? (
+        <Text style={[
+          styles.rowText,
+          dropdownTextStyle,
+          highlighted && styles.highlightedRowText,
+          highlighted && dropdownTextHighlightStyle
+        ]}>
+          {item}
+        </Text>
+      ) :
+      renderRow(item, index, highlighted);
+
     const preservedProps = {
-      key,
       accessible,
-      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
+      onPress: () => this._onItemPress(item, index),
     };
+
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
       const props = {...row.props};
-      props.key = preservedProps.key;
       props.onPress = preservedProps.onPress;
       const {children} = row.props;
+
       switch (row.type.displayName) {
         case 'TouchableHighlight': {
           return (
@@ -362,6 +359,7 @@ export default class ModalDropdown extends Component {
           break;
       }
     }
+
     return (
       <TouchableHighlight {...preservedProps}>
         {row}
@@ -369,16 +367,15 @@ export default class ModalDropdown extends Component {
     );
   };
 
-  _onRowPress(rowData, sectionID, rowID, highlightRow) {
+  _onItemPress(item, index) {
     const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
-    if (!onSelect || onSelect(rowID, rowData) !== false) {
-      highlightRow(sectionID, rowID);
-      const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
+    if (!onSelect || onSelect(index, item) !== false) {
+      const value = renderButtonText && renderButtonText(item) || item.toString();
       this._nextValue = value;
-      this._nextIndex = rowID;
+      this._nextIndex = index;
       this.setState({
         buttonText: value,
-        selectedIndex: rowID
+        selectedIndex: index
       });
     }
     if (!onDropdownWillHide || onDropdownWillHide() !== false) {
@@ -388,12 +385,9 @@ export default class ModalDropdown extends Component {
     }
   }
 
-  _renderSeparator = (sectionID, rowID, adjacentRowHighlighted) => {
-    const key = `spr_${rowID}`;
+  _renderSeparator = ({ highlighted, leadingItem }) => {
     return (
-      <View style={styles.separator}
-            key={key}
-      />
+      <View style={styles.separator}/>
     );
   };
 }
