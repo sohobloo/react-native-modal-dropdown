@@ -1,5 +1,6 @@
 /**
  * Created by sohobloo on 16/9/13.
+ * Forked by karniej on 17/07/2018
  */
 
 'use strict';
@@ -49,7 +50,10 @@ export default class ModalDropdown extends Component {
     dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
     dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-
+    touchableHiglightunderlayColor: PropTypes.string,
+    dropdownShadow: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    activeOpacity: PropTypes.number,
+    multiSelectDropdown: PropTypes.bool,
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
@@ -68,7 +72,13 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never'
+    keyboardShouldPersistTaps: 'never',
+    dropdownShadow: {
+      shadowOpacity: 0.25,
+      shadowColor: 'black',
+      shadowRadius: 15,
+      shadowOffset: { width: 0, height: 20 }
+    }
   };
 
   constructor(props) {
@@ -163,7 +173,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderButton() {
-    const {disabled, accessible, children, textStyle} = this.props;
+    const {disabled, accessible, children, textStyle, activeOpacity} = this.props;
     const {buttonText} = this.state;
 
     return (
@@ -171,6 +181,7 @@ export default class ModalDropdown extends Component {
                         disabled={disabled}
                         accessible={accessible}
                         onPress={this._onButtonPress}
+                        activeOpacity={activeOpacity}
       >
         {
           children ||
@@ -197,7 +208,7 @@ export default class ModalDropdown extends Component {
   };
 
   _renderModal() {
-    const {animated, accessible, dropdownStyle} = this.props;
+    const {animated, accessible, dropdownStyle, dropdownShadow} = this.props;
     const {showDropdown, loading} = this.state;
     if (showDropdown && this._buttonFrame) {
       const frameStyle = this._calcPosition();
@@ -213,7 +224,7 @@ export default class ModalDropdown extends Component {
                                     disabled={!showDropdown}
                                     onPress={this._onModalPress}
           >
-            <View style={styles.modal}>
+            <View style={[styles.modal, dropdownShadow]}>
               <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
                 {loading ? this._renderLoading() : this._renderDropdown()}
               </View>
@@ -284,7 +295,6 @@ export default class ModalDropdown extends Component {
     const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
     return (
       <ListView scrollEnabled={scrollEnabled}
-                style={styles.list}
                 dataSource={this._dataSource}
                 renderRow={this._renderRow}
                 renderSeparator={renderSeparator || this._renderSeparator}
@@ -304,7 +314,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderRow = (rowData, sectionID, rowID, highlightRow) => {
-    const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible} = this.props;
+    const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible, touchableHiglightunderlayColor} = this.props;
     const {selectedIndex} = this.state;
     const key = `row_${rowID}`;
     const highlighted = rowID == selectedIndex;
@@ -332,7 +342,7 @@ export default class ModalDropdown extends Component {
       switch (row.type.displayName) {
         case 'TouchableHighlight': {
           return (
-            <TouchableHighlight {...props}>
+            <TouchableHighlight underlayColor={touchableHiglightunderlayColor} {...props}>
               {children}
             </TouchableHighlight>
           );
@@ -363,14 +373,14 @@ export default class ModalDropdown extends Component {
       }
     }
     return (
-      <TouchableHighlight {...preservedProps}>
+      <TouchableHighlight underlayColor={touchableHiglightunderlayColor} {...preservedProps}>
         {row}
       </TouchableHighlight>
     );
   };
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
+    const {onSelect, renderButtonText, onDropdownWillHide, multiSelectDropdown} = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
@@ -382,9 +392,11 @@ export default class ModalDropdown extends Component {
       });
     }
     if (!onDropdownWillHide || onDropdownWillHide() !== false) {
+      multiSelectDropdown ? null : (
       this.setState({
         showDropdown: false
-      });
+      })
+      )
     }
   }
 
@@ -413,15 +425,11 @@ const styles = StyleSheet.create({
     height: (33 + StyleSheet.hairlineWidth) * 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'lightgray',
-    borderRadius: 2,
     backgroundColor: 'white',
     justifyContent: 'center'
   },
   loading: {
     alignSelf: 'center'
-  },
-  list: {
-    //flexGrow: 1,
   },
   rowText: {
     paddingHorizontal: 6,
