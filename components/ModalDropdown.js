@@ -87,9 +87,9 @@ export default class ModalDropdown extends Component {
       selectedIndex: props.defaultIndex,
     };
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps, prevState) {
     let { buttonText, selectedIndex } = this.state;
-    const { defaultIndex, defaultValue, options } = nextProps;
+    const { defaultIndex, defaultValue, options } = this.props;
     buttonText = this._nextValue == null ? buttonText : this._nextValue;
     selectedIndex = this._nextIndex == null ? selectedIndex : this._nextIndex;
     if (selectedIndex < 0) {
@@ -308,8 +308,8 @@ export default class ModalDropdown extends Component {
         {item}
       </Text>
     ) : (
-      renderRow(item, index, highlighted)
-    );
+        renderRow(item, index, highlighted)
+      );
     const preservedProps = {
       key,
       accessible,
