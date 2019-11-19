@@ -171,6 +171,7 @@ export default class ModalDropdown extends Component {
                         disabled={disabled}
                         accessible={accessible}
                         onPress={this._onButtonPress}
+                        onLongPress={this._onButtonLongPress}
       >
         {
           children ||
@@ -195,6 +196,12 @@ export default class ModalDropdown extends Component {
       this.show();
     }
   };
+
+  _onButtonLongPress = () => {
+    if (this.props.onLongPress) {
+      this.props.onLongPress();
+    }
+  }
 
   _renderModal() {
     const {animated, accessible, dropdownStyle} = this.props;
