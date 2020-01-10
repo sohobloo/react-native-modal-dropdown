@@ -54,6 +54,7 @@ export default class ModalDropdown extends Component {
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
     renderButtonText: PropTypes.func,
+    renderButton: PropTypes.func,
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -163,7 +164,7 @@ export default class ModalDropdown extends Component {
   }
 
   _renderButton() {
-    const {disabled, accessible, children, textStyle} = this.props;
+    const {renderButton, disabled, accessible, children, textStyle} = this.props;
     const {buttonText} = this.state;
 
     return (
@@ -173,15 +174,15 @@ export default class ModalDropdown extends Component {
                         onPress={this._onButtonPress}
       >
         {
-          children ||
-          (
-            <View style={styles.button}>
+          children || (!renderButton?
+            (<View style={styles.button}>
               <Text style={[styles.buttonText, textStyle]}
                     numberOfLines={1}
               >
                 {buttonText}
               </Text>
-            </View>
+            </View>) :
+            renderButton(buttonText)
           )
         }
       </TouchableOpacity>
