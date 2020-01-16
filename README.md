@@ -1,3 +1,44 @@
+# Support SectionList in dropdown list
+
+You just need to format your data as for a SectionList and add the "renderSectionHeader" porps
+
+```javascript
+const options = [
+  {
+    title: 'Main dishes',
+    data: ['Pizza', 'Burger', 'Risotto'],
+  },
+  {
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+  },
+  {
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
+  },
+  {
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
+];
+```
+
+```javascript
+renderHeader = ({ section: { title } }) => (
+  <View>
+    <Text>{title}</Text>
+  </View>
+)
+```
+
+```javascript
+<ModalDropdown
+  renderSectionHeader={this.renderHeader}
+  options={options}
+  renderRow={this.renderRow}
+/>
+```
+
 [![npm version](https://badge.fury.io/js/react-native-modal-dropdown.svg)](https://badge.fury.io/js/react-native-modal-dropdown)
 
 # react-native-modal-dropdown
