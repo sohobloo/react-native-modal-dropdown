@@ -302,7 +302,6 @@ export default class ModalDropdown extends Component {
       keyboardShouldPersistTaps: keyboardShouldPersistTaps,
     }
     if (renderSectionHeader) {
-      console.log('pass', options)
       return (
         <SectionList
           renderSectionHeader={renderSectionHeader}
