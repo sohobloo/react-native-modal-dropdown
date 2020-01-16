@@ -12,6 +12,21 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  TouchableHighlight,
+  Modal,
+  ActivityIndicator,
+  FlatList,
+  SectionList,
+} from 'react-native';
 import PropTypes from 'prop-types';
 const TOUCHABLE_ELEMENTS = [
   'TouchableHighlight',
@@ -58,6 +73,7 @@ export default class ModalDropdown extends Component {
     adjustFrame: PropTypes.func,
     renderRow: PropTypes.func,
     renderSeparator: PropTypes.func,
+    renderSectionHeader: PropTypes.func,
     renderButtonText: PropTypes.func,
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
@@ -70,6 +86,7 @@ export default class ModalDropdown extends Component {
     defaultValue: 'Please select...',
     options: null,
     animated: true,
+    renderSectionHeader: null,
     showsVerticalScrollIndicator: true,
     keyboardShouldPersistTaps: 'never',
   };
@@ -271,19 +288,31 @@ export default class ModalDropdown extends Component {
       showsVerticalScrollIndicator,
       keyboardShouldPersistTaps,
       options,
+      renderSectionHeader,
     } = this.props;
+    const props = {
+      data: options,
+      scrollEnabled: scrollEnabled,
+      style: styles.list,
+      keyExtractor: (item, i) => (`key-${i}`),
+      renderItem: this._renderItem,
+      ItemSeparatorComponent: renderSeparator || this._renderSeparator,
+      automaticallyAdjustContentInsets: false,
+      showsVerticalScrollIndicator: showsVerticalScrollIndicator,
+      keyboardShouldPersistTaps: keyboardShouldPersistTaps,
+    }
+    if (renderSectionHeader) {
+      console.log('pass', options)
+      return (
+        <SectionList
+          renderSectionHeader={renderSectionHeader}
+          sections={options}
+          {...props}
+        />
+      );
+    }
     return (
-      <FlatList
-        data={options}
-        scrollEnabled={scrollEnabled}
-        style={styles.list}
-        keyExtractor={(item, i) => (`key-${i}`)}
-        renderItem={this._renderItem}
-        ItemSeparatorComponent={renderSeparator || this._renderSeparator}
-        automaticallyAdjustContentInsets={false}
-        showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-      />
+      <FlatList {...props} />
     );
   }
   _renderItem = ({ item, index, separators }) => {
