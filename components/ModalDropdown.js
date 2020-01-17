@@ -11,20 +11,6 @@ import {
   Modal,
   ActivityIndicator,
   FlatList,
-} from 'react-native';
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  TouchableHighlight,
-  Modal,
-  ActivityIndicator,
-  FlatList,
   SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -39,7 +25,9 @@ export default class ModalDropdown extends Component {
     disabled: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     defaultIndex: PropTypes.number,
+    selected: PropTypes.string,
     defaultValue: PropTypes.string,
+    selectByKey: PropTypes.string,
     options: PropTypes.array.isRequired,
     accessible: PropTypes.bool,
     animated: PropTypes.bool,
@@ -82,6 +70,8 @@ export default class ModalDropdown extends Component {
   static defaultProps = {
     disabled: false,
     scrollEnabled: true,
+    selected: null,
+    selectByKey: null,
     defaultIndex: -1,
     defaultValue: 'Please select...',
     options: null,
@@ -100,8 +90,8 @@ export default class ModalDropdown extends Component {
       accessible: !!props.accessible,
       loading: !props.options,
       showDropdown: false,
-      buttonText: props.defaultValue,
-      selectedIndex: props.defaultIndex,
+      buttonText: props.selectByKey ? props.selected : props.defaultValue,
+      selectedIndex: props.selectByKey ? props.selected : props.defaultIndex,
     };
   }
   static getDerivedStateFromProps(props, state) {
@@ -154,6 +144,7 @@ export default class ModalDropdown extends Component {
       options,
       defaultIndex,
       renderButtonText,
+      selectByKey,
     } = this.props;
     let value = defaultValue;
     if (idx == null || !options || idx >= options.length) {
@@ -167,7 +158,7 @@ export default class ModalDropdown extends Component {
     this._nextValue = value;
     this._nextIndex = idx;
     this.setState({
-      buttonText: value,
+      buttonText: selectByKey ? options[idx][selectByKey] : value,
       selectedIndex: idx,
     });
   }
@@ -320,10 +311,14 @@ export default class ModalDropdown extends Component {
       dropdownTextStyle,
       dropdownTextHighlightStyle,
       accessible,
+      selectByKey,
+      selected,
     } = this.props;
     const { selectedIndex } = this.state;
-    const key = `row_${index}`;
-    const highlighted = index === selectedIndex;
+    const selector = selectByKey ? item[selectByKey] : index;
+    const selectedItem = selectByKey ? selected : selectedIndex;
+    const key = `row_${selector}`;
+    const highlighted = selector === selectedItem;
     const row = !renderRow ? (
       <Text
         style={[
@@ -376,7 +371,12 @@ export default class ModalDropdown extends Component {
     return <TouchableHighlight {...preservedProps}>{row}</TouchableHighlight>;
   };
   _onRowPress(rowData, rowID, highlightRow) {
-    const { onSelect, renderButtonText, onDropdownWillHide } = this.props;
+    const {
+      onSelect,
+      renderButtonText,
+      onDropdownWillHide,
+      selectByKey,
+    } = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow.highlight(rowID);
       const value =
@@ -384,7 +384,7 @@ export default class ModalDropdown extends Component {
       this._nextValue = value;
       this._nextIndex = rowID;
       this.setState({
-        buttonText: value,
+        buttonText: selectByKey ? rowData[selectByKey] : value,
         selectedIndex: rowID,
       });
     }
