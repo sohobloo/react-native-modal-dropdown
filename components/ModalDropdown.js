@@ -76,8 +76,6 @@ export default class ModalDropdown extends Component {
 
     this._button = null;
     this._buttonFrame = null;
-    this._nextValue = null;
-    this._nextIndex = null;
 
     this.state = {
       accessible: !!props.accessible,
@@ -88,25 +86,27 @@ export default class ModalDropdown extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    let {buttonText, selectedIndex} = this.state;
+  static getDerivedStateFromProps(nextProps, state) {
+    let {selectedIndex, loading} = state;
     const {defaultIndex, defaultValue, options} = nextProps;
-    buttonText = this._nextValue == null ? buttonText : this._nextValue;
-    selectedIndex = this._nextIndex == null ? selectedIndex : this._nextIndex;
+    let newState = null;
     if (selectedIndex < 0) {
       selectedIndex = defaultIndex;
+      newState = {
+        selectedIndex: selectedIndex
+      };
       if (selectedIndex < 0) {
-        buttonText = defaultValue;
+        newState.buttonText = defaultValue;
       }
     }
-    this._nextValue = null;
-    this._nextIndex = null;
 
-    this.setState({
-      loading: !options,
-      buttonText,
-      selectedIndex
-    });
+    if (!loading !== !options) {
+      if (!newState) {
+        newState = {};
+      }
+      newState.loading = !options;
+    }
+    return newState;
   }
 
   render() {
@@ -152,9 +152,6 @@ export default class ModalDropdown extends Component {
     if (idx >= 0) {
       value = renderButtonText ? renderButtonText(options[idx]) : options[idx].toString();
     }
-
-    this._nextValue = value;
-    this._nextIndex = idx;
 
     this.setState({
       buttonText: value,
@@ -374,8 +371,6 @@ export default class ModalDropdown extends Component {
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
-      this._nextValue = value;
-      this._nextIndex = rowID;
       this.setState({
         buttonText: value,
         selectedIndex: rowID
