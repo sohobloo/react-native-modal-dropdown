@@ -78,6 +78,7 @@ Prop                | Type     | Optional | Default   | Description
 `onSelect`          | func     | Yes      |           | Trigger when option row touched with selected `index` and `value`. **Return `false` can cancel the event.**
 `accessible`          | bool     | Yes      | true    | Set accessibility of dropdown modal and dropdown rows
 `keyboardShouldPersistTaps`    | enum('always', 'never', 'handled') | Yes | 'never' | See react-native `ScrollView` props
+`multipleSelect`          | bool     | Yes      | false    | Remove event closing modal when calling onSelect.
 
 ### Methods
 Method            |  Description
