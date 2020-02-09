@@ -34,6 +34,7 @@ const TOUCHABLE_ELEMENTS = [
 export default class ModalDropdown extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
+    multipleSelect: PropTypes.bool,
     scrollEnabled: PropTypes.bool,
     defaultIndex: PropTypes.number,
     defaultValue: PropTypes.string,
@@ -62,6 +63,7 @@ export default class ModalDropdown extends Component {
 
   static defaultProps = {
     disabled: false,
+    multipleSelect: false,
     scrollEnabled: true,
     defaultIndex: -1,
     defaultValue: 'Please select...',
@@ -370,7 +372,12 @@ export default class ModalDropdown extends Component {
   };
 
   _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
+    const {
+      onSelect,
+      renderButtonText,
+      onDropdownWillHide,
+      multipleSelect
+    } = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
       highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
@@ -381,7 +388,10 @@ export default class ModalDropdown extends Component {
         selectedIndex: rowID
       });
     }
-    if (!onDropdownWillHide || onDropdownWillHide() !== false) {
+
+    if (!multipleSelect &&
+        (!onDropdownWillHide || onDropdownWillHide() !== false)
+       ) {
       this.setState({
         showDropdown: false
       });
