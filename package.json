@@ -1,6 +1,6 @@
 {
   "name": "react-native-modal-dropdown",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A react-native dropdown component for both iOS and Android.",
   "keywords": [
     "react",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.0",
-    "deprecated-react-native-listview": "0.0.5"
+    "deprecated-react-native-listview": "0.0.6"
   },
   "scripts": {
     "test": "echo \"no test specified\" && exit 0"
