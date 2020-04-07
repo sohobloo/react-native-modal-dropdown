@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.0",
-    "deprecated-react-native-listview": "0.0.5"
+    "deprecated-react-native-listview": "0.0.6"
   },
   "scripts": {
     "test": "echo \"no test specified\" && exit 0"
