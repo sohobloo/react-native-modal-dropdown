@@ -19,15 +19,8 @@ You can find them in the example.
 
 ## Update History
 
-### v0.6.2
-- Fix [#139](https://github.com/sohobloo/react-native-modal-dropdown/issues/139) `renderButtonText` renders \[object Object] if there is a call to `setState` in `onSelect` or `renderButtonText` functions
-
-### v0.6.1
-- Fix [#127](https://github.com/sohobloo/react-native-modal-dropdown/issues/127) `renderButtonText` does not work on `select(idx)`  (Thanks to [@swb2016](https://github.com/swb2016))
-- Code optimization.
-
-### v0.6.0
-- Introduce `renderButtonText` property to extract button text from object array data.
+### v0.7.0
+- Quick fix for react native 0.60. (Thanks to [@ibtesamlatif2997](https://github.com/ibtesamlatif2997))
 
 [Full update history list](https://github.com/sohobloo/react-native-modal-dropdown/wiki/Update-History)
 
