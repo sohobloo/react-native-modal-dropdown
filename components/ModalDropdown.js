@@ -345,7 +345,7 @@ export default class ModalDropdown extends Component {
       const { children } = row.props;
       switch (row.type.displayName) {
         case "TouchableHighlight": {
-          return <TouchableHighlight {...props}>{children}</TouchableHighlight>;
+          return <TouchableHighlight underlayColor='none'  {...props}>{children}</TouchableHighlight>;
         }
         case "TouchableOpacity": {
           return <TouchableOpacity {...props}>{children}</TouchableOpacity>;
@@ -360,7 +360,7 @@ export default class ModalDropdown extends Component {
           break;
       }
     }
-    return <TouchableHighlight {...preservedProps}>{row}</TouchableHighlight>;
+    return <TouchableHighlight underlayColor='none'  {...preservedProps}>{row}</TouchableHighlight>;
   };
 
   _onRowPress(rowData, rowID) {
