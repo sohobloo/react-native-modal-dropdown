@@ -1,6 +1,6 @@
 {
-  "name": "react-native-modal-dropdown",
-  "version": "0.7.0",
+  "name": "vhuerta-react-native-modal-dropdown",
+  "version": "0.7.3",
   "description": "A react-native dropdown component for both iOS and Android.",
   "keywords": [
     "react",
@@ -29,8 +29,7 @@
     "url": "https://github.com/sohobloo/react-native-modal-dropdown.git"
   },
   "dependencies": {
-    "prop-types": "^15.6.0",
-    "deprecated-react-native-listview": "0.0.5"
+    "prop-types": "^15.6.0"
   },
   "scripts": {
     "test": "echo \"no test specified\" && exit 0"
