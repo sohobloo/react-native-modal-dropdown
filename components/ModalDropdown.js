@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 
 import {
+  FlatList,
   StyleSheet,
   Dimensions,
   View,
@@ -19,7 +20,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import ListView from 'deprecated-react-native-listview';
 import PropTypes from 'prop-types';
 
 const TOUCHABLE_ELEMENTS = [
@@ -345,12 +345,14 @@ export default class ModalDropdown extends Component {
       renderSeparator,
       showsVerticalScrollIndicator,
       keyboardShouldPersistTaps,
+      options,
     } = this.props;
     return (
-      <ListView
+      <FlatList
         scrollEnabled={scrollEnabled}
         style={styles.list}
-        dataSource={this._dataSource}
+        data={options}
+        keyExtractor={this._keyExtractor}
         renderRow={this._renderRow}
         renderSeparator={renderSeparator || this._renderSeparator}
         automaticallyAdjustContentInsets={false}
@@ -360,13 +362,7 @@ export default class ModalDropdown extends Component {
     );
   }
 
-  get _dataSource() {
-    const { options } = this.props;
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    });
-    return ds.cloneWithRows(options);
-  }
+  _keyExtractor = (item, index) => `${index}`;
 
   _renderRow = (rowData, sectionID, rowID, highlightRow) => {
     const {
