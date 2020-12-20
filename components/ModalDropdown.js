@@ -1,5 +1,6 @@
 /**
  * Created by sohobloo on 16/9/13.
+ * Updated by TheFabiCraft
  */
 
 'use strict';
@@ -9,6 +10,7 @@ import React, {
 } from 'react';
 
 import {
+  FlatList,
   StyleSheet,
   Dimensions,
   View,
@@ -21,7 +23,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import ListView from "deprecated-react-native-listview";
+// import ListView from "deprecated-react-native-listview";
 import PropTypes from 'prop-types';
 
 const TOUCHABLE_ELEMENTS = [
@@ -88,7 +90,7 @@ export default class ModalDropdown extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     let {buttonText, selectedIndex} = this.state;
     const {defaultIndex, defaultValue, options} = nextProps;
     buttonText = this._nextValue == null ? buttonText : this._nextValue;
@@ -109,7 +111,7 @@ export default class ModalDropdown extends Component {
     });
   }
 
-  render() {
+  render () {
     return (
       <View {...this.props}>
         {this._renderButton()}
@@ -168,16 +170,16 @@ export default class ModalDropdown extends Component {
 
     return (
       <TouchableOpacity ref={button => this._button = button}
-                        disabled={disabled}
-                        accessible={accessible}
-                        onPress={this._onButtonPress}
+        disabled={disabled}
+        accessible={accessible}
+        onPress={this._onButtonPress}
       >
         {
           children ||
           (
             <View style={styles.button}>
               <Text style={[styles.buttonText, textStyle]}
-                    numberOfLines={1}
+                numberOfLines={1}
               >
                 {buttonText}
               </Text>
@@ -203,15 +205,16 @@ export default class ModalDropdown extends Component {
       const frameStyle = this._calcPosition();
       const animationType = animated ? 'fade' : 'none';
       return (
-        <Modal animationType={animationType}
-               visible={true}
-               transparent={true}
-               onRequestClose={this._onRequestClose}
-               supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}
+        <Modal
+          animationType={animationType}
+          visible
+          transparent
+          onRequestClose={this._onRequestClose}
+          supportedOrientations={['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right']}
         >
           <TouchableWithoutFeedback accessible={accessible}
-                                    disabled={!showDropdown}
-                                    onPress={this._onModalPress}
+            disabled={!showDropdown}
+            onPress={this._onModalPress}
           >
             <View style={styles.modal}>
               <View style={[styles.dropdown, dropdownStyle, frameStyle]}>
@@ -281,29 +284,35 @@ export default class ModalDropdown extends Component {
   }
 
   _renderDropdown() {
-    const {scrollEnabled, renderSeparator, showsVerticalScrollIndicator, keyboardShouldPersistTaps} = this.props;
+    const {scrollEnabled, showsVerticalScrollIndicator, keyboardShouldPersistTaps, options} = this.props;
+    const Separator = <View style={styles.separator} />
     return (
-      <ListView scrollEnabled={scrollEnabled}
-                style={styles.list}
-                dataSource={this._dataSource}
-                renderRow={this._renderRow}
-                renderSeparator={renderSeparator || this._renderSeparator}
-                automaticallyAdjustContentInsets={false}
-                showsVerticalScrollIndicator={showsVerticalScrollIndicator}
-                keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+      <FlatList
+        scrollEnabled={scrollEnabled}
+        style={styles.list}
+        // dataSource={this._dataSource}
+        ItemSeparatorComponent={this._renderSeparator}
+        data={options}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderRow}
+        automaticallyAdjustContentInsets={false}
+        showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       />
     );
   }
 
-  get _dataSource() {
-    const {options} = this.props;
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    return ds.cloneWithRows(options);
-  }
+  _keyExtractor = (item, index) => `${index}`
 
-  _renderRow = (rowData, sectionID, rowID, highlightRow) => {
+  // get _dataSource() {
+  //   const {options} = this.props;
+  //   const ds = new ListView.DataSource({
+  //     rowHasChanged: (r1, r2) => r1 !== r2
+  //   });
+  //   return ds.cloneWithRows(options);
+  // }
+
+  _renderRow = ({item: rowData, index: rowID, separators}) => {
     const {renderRow, dropdownTextStyle, dropdownTextHighlightStyle, accessible} = this.props;
     const {selectedIndex} = this.state;
     const key = `row_${rowID}`;
@@ -322,7 +331,7 @@ export default class ModalDropdown extends Component {
     const preservedProps = {
       key,
       accessible,
-      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
+      onPress: () => this._onRowPress(rowData, rowID),
     };
     if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
       const props = {...row.props};
@@ -369,10 +378,10 @@ export default class ModalDropdown extends Component {
     );
   };
 
-  _onRowPress(rowData, sectionID, rowID, highlightRow) {
+  _onRowPress(rowData, rowID) {
     const {onSelect, renderButtonText, onDropdownWillHide} = this.props;
     if (!onSelect || onSelect(rowID, rowData) !== false) {
-      highlightRow(sectionID, rowID);
+      // highlightRow(sectionID, rowID);
       const value = renderButtonText && renderButtonText(rowData) || rowData.toString();
       this._nextValue = value;
       this._nextIndex = rowID;
@@ -388,13 +397,8 @@ export default class ModalDropdown extends Component {
     }
   }
 
-  _renderSeparator = (sectionID, rowID, adjacentRowHighlighted) => {
-    const key = `spr_${rowID}`;
-    return (
-      <View style={styles.separator}
-            key={key}
-      />
-    );
+  _renderSeparator = () => {
+    return <View style={styles.separator} />
   };
 }
 
