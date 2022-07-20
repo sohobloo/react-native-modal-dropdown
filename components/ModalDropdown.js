@@ -10,7 +10,6 @@ import React, {
 
 import {
   StyleSheet,
-  Dimensions,
   View,
   Text,
   TouchableWithoutFeedback,
@@ -23,6 +22,7 @@ import {
 
 import ListView from "deprecated-react-native-listview";
 import PropTypes from 'prop-types';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 
 const TOUCHABLE_ELEMENTS = [
   'TouchableHighlight',
@@ -227,9 +227,9 @@ export default class ModalDropdown extends Component {
   _calcPosition() {
     const {dropdownStyle, style, adjustFrame} = this.props;
 
-    const dimensions = Dimensions.get('window');
-    const windowWidth = dimensions.width;
-    const windowHeight = dimensions.height;
+    const {width, height} = initialWindowMetrics.frame;
+    const windowWidth = width;
+    const windowHeight = height;
 
     const dropdownHeight = (dropdownStyle && StyleSheet.flatten(dropdownStyle).height) ||
       StyleSheet.flatten(styles.dropdown).height;
