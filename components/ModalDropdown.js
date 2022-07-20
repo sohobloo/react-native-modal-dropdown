@@ -10,7 +10,6 @@ import React, {
 
 import {
   StyleSheet,
-  Dimensions,
   View,
   Text,
   TouchableWithoutFeedback,
@@ -19,11 +18,11 @@ import {
   TouchableHighlight,
   Modal,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 
 import ListView from "deprecated-react-native-listview";
 import PropTypes from 'prop-types';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 
 const TOUCHABLE_ELEMENTS = [
   'TouchableHighlight',
@@ -58,8 +57,7 @@ export default class ModalDropdown extends Component {
 
     onDropdownWillShow: PropTypes.func,
     onDropdownWillHide: PropTypes.func,
-    onSelect: PropTypes.func,
-    androidWindowHeight: PropTypes.number,
+    onSelect: PropTypes.func
   };
 
   static defaultProps = {
@@ -70,8 +68,7 @@ export default class ModalDropdown extends Component {
     options: null,
     animated: true,
     showsVerticalScrollIndicator: true,
-    keyboardShouldPersistTaps: 'never',
-    androidWindowHeight: 0,
+    keyboardShouldPersistTaps: 'never'
   };
 
   constructor(props) {
@@ -228,11 +225,11 @@ export default class ModalDropdown extends Component {
   }
 
   _calcPosition() {
-    const {dropdownStyle, style, adjustFrame, androidWindowHeight} = this.props;
+    const {dropdownStyle, style, adjustFrame} = this.props;
 
-    const dimensions = Dimensions.get('window');
-    const windowWidth = dimensions.width;
-    const windowHeight = Platform.OS === 'android' ? androidWindowHeight : dimensions.height;
+    const {width, height} = initialWindowMetrics.frame;
+    const windowWidth = width;
+    const windowHeight = height;
 
     const dropdownHeight = (dropdownStyle && StyleSheet.flatten(dropdownStyle).height) ||
       StyleSheet.flatten(styles.dropdown).height;
